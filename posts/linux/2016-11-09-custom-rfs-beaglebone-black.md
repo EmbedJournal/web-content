@@ -70,14 +70,14 @@ Extract the tarball with `tar -xvf busybox-1.24.1.tar.bz2`. Then, cross compile 
 
 Note: This assumes that you have the arm cross compilation toolchain configured in your system. If not please go through my [previous post](/kernel-compilation-beaglebone-black/) to see how to get it done.
 
-``` shell
+```shell
 $ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- defconfig
 $ make ARCH=arm CRSOO_COMPILE=arm-linux-gnueabihf- menuconfig
 ```
 
 Select Busybox Settings -> Build Options -> Build Busybox as a static binary (no shared libs). Press y for selecting that option and save it. Then execute the following commands for building.
 
-``` shell
+```shell
 $ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- CONFIG_PREFIX=/path/to/RFS install
 ```
 
@@ -87,7 +87,7 @@ After the successful completion of the above commands, you can see 3 directories
 
 Create /dev and some special files under this directory.
 
-``` shell
+```shell
 $ mkdir dev
 $ mknod dev/console c 5 1
 $ mknod dev/null c 1 3
@@ -102,7 +102,7 @@ $ mknod dev/zero c 1 5
 
 For the static libraries, copy from the ARM cross compiler toolchain path.
 
-``` shell
+```shell
 $ mkdir lib usr/lib
 $ rsync -a /opt/arm-linux-gnueabihf/lib/ ./lib/
 $ rsync -a /opt/arm-linux-gnueabihf/lib/ ./usr/lib/
@@ -112,7 +112,7 @@ $ rsync -a /opt/arm-linux-gnueabihf/lib/ ./usr/lib/
 
 Create directories for mounting the virtual filesystems (procfs, sysfs) and root directory.
 
-``` shell
+```shell
 $ mkdir proc sys root
 ```
 
@@ -120,7 +120,7 @@ $ mkdir proc sys root
 
 Create /etc and then, create additional files inside this directory.
 
-``` shell
+```shell
 $ mkdir etc
 $ cat >> etc/inittab
 null::sysinit:/bin/mount -a
@@ -132,7 +132,7 @@ null::restart:/sbin/reboot
 
 Create another file called fstab and populate it. This file will mount the virtual file systems.
 
-``` shell
+```shell
 $ cat >> etc/fstab
 proc  /proc proc  defaults  0 0
 sysfs /sys  sysfs defaults  0 0
@@ -141,7 +141,7 @@ sysfs /sys  sysfs defaults  0 0
 
 Also, create files called hostname and passwd.
 
-``` shell
+```shell
 $ cat >> etc/hostname
 embedjournal
 [ctrl-D]
@@ -159,7 +159,7 @@ Here, we don't use password for login. So, after logging in, set the password by
 
 Note: You may encounter 'read only filesystem error'. This is due to the kernel parameters which Uboot has passed. You can change it by modifying the `uEnv.txt` file as:
 
-``` shell
+```shell
 root=/dev/mmcblk0p2 rw
 ```
 

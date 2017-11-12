@@ -95,14 +95,14 @@ Now that we have the right setup in place, lets go ahead and build the embedded 
 
 To being with, you will need a local copy of the Zephyr source tree. So lets go ahead and clone the upstream repository from [GitHub][zephry-github].
 
-``` shell
+```shell
 $ cd ~/workspace
 $ git clone https://github.com/zephyrproject-rtos/zephyr.git
 ```
 
 Once you have clone the zephyr source tree, you will have export zephyr SDK path and GCC variant so that the zephyr make system understand where to find the toolchains. You will also need to source `zephyr-env.sh` present in the top level of the cloned repository.
 
-``` shell
+```shell
 $ export ZEPHYR_GCC_VARIANT=zephyr
 $ export ZEPHYR_SDK_INSTALL_DIR=/path/to/zephyr-sdk/
 $ cd zephyr
@@ -111,7 +111,7 @@ $ source zephyr-env.sh
 
 Zephyr allows your application software to be isolated from the Zephyr kernel (although, they are built together) so, it's a good practice to copy samples into your workspace and then build them. This way, your git tree remains pristine.
 
-``` shell
+```shell
 $ cp -r $ZEPHYR_BASE/samples/basic/blinky ~/workspace/stm32/
 $ cd ~/workspace/stm32/blinky
 $ make BOARD=stm32_min_dev
@@ -121,7 +121,7 @@ If you did everything right, this `make` should build without any warnings or er
 
 Now, the final step, sending the built binary into the board to see the output. To do this, all you have to do is, invoke the `flash` target and the rest of the work is done for you.
 
-``` shell
+```shell
 $ make BOARD=stm32_min_dev flash
 ```
 

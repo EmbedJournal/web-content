@@ -18,7 +18,7 @@ The most widely used compiler is the GCC (GNU C Compiler). It was released in th
 
 You can always have a cool development environment to compile C in just one click. But that spoils all the fun doesn't it? Well not just the fun but the insight you will get on how things are done underneath the GUI is totally lost. Most people who use GCC due to the compulsion  of a curriculum in colleges seem to know just these line to compile and execute a program.
 
-``` shell
+```shell
 $ gcc filename.c
 $ ./a.out
 ```
@@ -37,7 +37,7 @@ And yeah, Linux doesn't pop up saying "there is another file with the same name 
 
 Here is how to specify the output file name during compilation and execute it likewise,
 
-``` shell
+```shell
 $ gcc filename.c -o executable.file
 $ ./executable.file
 ```
@@ -48,7 +48,7 @@ Most people have a feeling that if the program runs they don't have to worry abo
 
 If you are lazy (like me) to write gcc -Wall each time you can add an alias to gcc as gcc -Wall in the .bashrc file in the home directory. This can be done by adding this line anywhere in that file,
 
-``` shell
+```shell
 alias gcc='gcc -Wall'
 ```
 

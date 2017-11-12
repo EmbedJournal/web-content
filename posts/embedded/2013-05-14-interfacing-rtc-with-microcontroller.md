@@ -43,7 +43,7 @@ Lastly there is a bit named CH (Clock Halt) in the seconds register. This bit wh
 
 This function gets the time from the RTC, It takes the register address to read from as a parameter and return the content of that register one at a time. This follows the procedure to read and [write data in I2C bus](/two-wire-interface-i2c-protocol-in-a-nut-shell/).
 
-``` c
+```c
 unsigned int get_time(unsigned int address)
 {
    unsigned int data;
@@ -61,7 +61,7 @@ unsigned int get_time(unsigned int address)
 
 This function set the time in the RTC's time keeping register, It take the register address to read from and the data to be written as parameters. This follows the procedure to [write data to I2C bus](/two-wire-interface-i2c-protocol-in-a-nut-shell/) in a nut shell.
 
-``` c
+```c
 void set_time(unsigned int address, unsigned int value)
 {
     i2c_start();
@@ -75,7 +75,7 @@ void set_time(unsigned int address, unsigned int value)
 
 To reset the time use this function. You will have to calibrate the value for each register manually before suing this function. This may not be the most optimized means to set the time again this is the most straight forward method. This is all BCD so there is not much calculation involved if you want the hours to be 12 then just pass 0x12 to that corresponding register.
 
-``` c
+```c
 void reset_time()
 {
     i2c_start();
@@ -95,7 +95,7 @@ void reset_time()
 
 This is more like a code that can be used in any controller as I have not done any MCU specific stuffs up till now. All the MCU specific stuffs are done in the subroutine calls. I strongly recommend you to write your own I2C library from scratch I will post mine just for a reference. I have tested this code and its working properly with MPLAB X and C18 compiler.
 
-``` c
+```c
 #include "p18f4520.h"
 void i2c_start(void)    // Initiate a Start sequence
 {

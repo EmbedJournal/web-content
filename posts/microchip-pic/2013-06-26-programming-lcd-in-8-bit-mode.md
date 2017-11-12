@@ -42,7 +42,7 @@ The 8 bit mode of operation of the LCD is relatively faster and simpler than the
 
 Before writing the code we have to decide on the pins that we are going to use for use for the interface. Once this is done, we have to put them to use by setting code macros with `#define`. In C the macros are just shortcuts. If you write `#define HIGH 1` Where ever the compiler encounters an instance of HIGH it will consider it as 1. This can be really helpful in providing more readability and portability for you code which you will see by the end of this post.
 
-``` c
+```c
 /****************** PIN Mapping *******************/
 #define RS PORTDbits.RD0
 #define RW PORTDbits.RD1
@@ -77,7 +77,7 @@ Use as many macros as you want for all the constants and IO pins. Once all the c
 
 **Description:** This function is used to write a 8 bit parallel data into the DD RAM of the LCD at the memory location last pointed to my the AC. Before writing any data the line address or the position address has to be given using the LCD_cmd() function.
 
-``` c
+```c
 void LCD_data(unsigned char data){
     LCD_isbusy();
     RS = HIGH;
@@ -99,7 +99,7 @@ void LCD_data(unsigned char data){
 
 **Description:** This function is used to send data to the command register. It can be an internal LCD command or a DD RAM address but commands should be framed properly form the command sheet.
 
-``` c
+```c
 void LCD_cmd(unsigned char cmd){
     LCD_isbusy();
     RS = LOW;
@@ -121,7 +121,7 @@ void LCD_cmd(unsigned char cmd){
 
 **Description:** This function is used to check for the busy flag (DB7). The LCD cannot do any operations as long as it is busy. So this function never terminates as long as the LCD is busy (it gets stuck in an infinite loop).
 
-``` c
+```c
 void LCD_isbusy(void)
 {
     TRISBbits.TRISB7=1;         // Make D7 as input
@@ -145,7 +145,7 @@ void LCD_isbusy(void)
 
 **Description:** This function take the address of the first character of the string that you wish to write to the LCD as a parameter and then sequentially calls the LCD\_data() function each time with the next successive character of the string. So this is nothing but an automated version of the sequential call to the LCD\_data() function. It takes away a lot of headache when trying to print length messages.
 
-``` c
+```c
 void LCD_string(const rom char *buffer)
 {
     while(*buffer)              // Write data to LCD up to null
@@ -161,7 +161,7 @@ void LCD_string(const rom char *buffer)
 
 Now all that is remaining is to collect all the functions above and put then in a single C source file and include necessary header files and we are good to go. This is how your final C source file should look like. Use the small icon below the source code to copy the code with proper formatting.
 
-``` c
+```c
 /*
  * File Name: lcd.c
  * Author: Siddharth Chandrasekaran
@@ -229,7 +229,7 @@ void LCD_isbusy(void)
 
 With the source file lcd.c ready you will need a means to allow you main C file (one which has the main() function) to access the function in the source file. For doing this you can either extern all the junction in the source file or have a .h file to bridge them together. The first method is a little messy so lets do the latter one. Create a file called lcd.h and add the following code,
 
-``` c
+```c
 /*
  * File Name: lcd.h
  * Author: Siddharth Chandrasekaran
@@ -277,7 +277,7 @@ void LCD_isbusy(void);
 
 Now that you have the source and header files ready, you can incorporate the functions in you code as shown in this code. This is the program that I wrote for making the video above. It does not demonstrate the use if all the functions but I think with this code you can start the experimenting for yourself.
 
-``` c
+```c
 /*
  * File Name: basic_lcd_interface.c
  * Author: Siddharth Chandrasekaran

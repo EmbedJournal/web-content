@@ -30,7 +30,7 @@ The [Balckboy](/line-follower-robot/), has 8 sensors mounted on the base plate t
 
 In the code I use C macros to address these sensors without any confusion. Here is what I have defined,
 
-``` c
+```c
 #define RR  PORTDbits.RD5
 #define R   PORTDbits.RD0
 #define SR  PORTDbits.RD1
@@ -49,7 +49,7 @@ Here is an image to show the physical location of these senors on the base plate
 
 In the theory section, I had given a clear definition of a bend and turn (node), so I will not rehash it here. This function is used to determine if, a junction met my the robot, is a node or a normal bend. If it is a node, it returns 1 and if it is a turn it returns 0. There is also another purpose this function serves. It also detects the end of track maker denoted by the return of 2 to the calling function.
 
-``` c
+```c
 unsigned char check(void)
 {
     LATC = FRONT;
@@ -68,7 +68,7 @@ unsigned char check(void)
 
 This function is used used to identify two consecutive opposite directions in the `dir_arr` array and replace them with an arbitrary value (say 50) so that it can be removed as a useless path traversed by the robot. It traverses the entire array searching for such opposite directions and increments a counter variable for monitoring if there has been at least one replacement of data. This counter is then used to terminate the call to the remove() function.
 
-``` c
+```c
 /*
  * Table of Action for dir_arr[50];
  * 1 - North
@@ -80,7 +80,7 @@ This function is used used to identify two consecutive opposite directions in th
 
 If the robot made a normal single step turn to left or right then 1 is passed. If the robot makes a U turn (which is a 2 step turn) at a particular point then it has to send 2 to this function so that it is able to update the direction accordingly. The logic is such that, if it is a normal single step turn, then the next value of the `dir_arr` is one more than the previous value. On the other hand if it is a U-turn, then the next value of the `dir_arr` is two more than the previous value. In both the cases, the total sum should not exceed 4 so the answer is modulo 4-ed to get a circular buffer.
 
-``` c
+```c
 void update_direction(unsigned char i)
 {
     //static unsigned char idx = 1;
@@ -95,7 +95,7 @@ void update_direction(unsigned char i)
 
 This function is used used to identify two consecutive the opposite directions in the dir_arr array and replace them with an arbitrary value (say 50) so that it can be removed as an useless path traversed by the robot. A I traverse the entire array searching for such opposite directions and increments a counter variable for monitoring if there has been at least one replace of data. This counter is then used to terminate the call to the remove() function.
 
-``` c
+```c
 void sort(void)
 {
     unsigned char * index = dir_arr;    //local copy of direction array
@@ -121,7 +121,7 @@ void sort(void)
 
 The remove() function is used to remove the consecutive equal elements in the sorted array. The remove() function calls the sort function again. This process is recursive and has to be terminated by the the sort() function if there is no more sorting to be done. This is monitored by the loop counter ctr. If the counter is never incremented, then in the last pass there wasn't anything to sort which means that all the passes are over and the array has the shortest path stored in it.
 
-``` c
+```c
 void remove(void)
 {
     unsigned char arr[50] = {0};
@@ -141,7 +141,7 @@ void remove(void)
 
 Since our objective is to make the robot come back to the source node from the destination node choosing the shortest path, we have to rearrange the dir_arr array such that the each of the directions are reversed. That is North becomes South and South becomes North and vice-verse. Also the total arrya has to be flipped; as in, n<sup>th</sup> element become the 1<sup>st</sup> element and so on.
 
-``` c
+```c
 void dir_rev(void)
 {
     int idx = 0;

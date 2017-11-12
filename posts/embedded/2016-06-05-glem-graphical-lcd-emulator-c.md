@@ -48,7 +48,7 @@ You can find the git upstream at <https://github.com/cbsiddharth/glem>.Clone thi
 
 Once you have made the project, you will have to start the GLEM server with your GLCD's width and height as arguments. For example if you have a 128x64 1bit GLCD, you should run,
 
-``` shell
+```shell
 $ ./glem serve 128 64
 ```
 
@@ -58,7 +58,7 @@ Now you should see a new window looking something like this (may not be identica
 
 The vertical lines have appeared because I wrote 0x55 to all display RAM. You can also run the following to test if GLEM server is working,
 
-``` shell
+```shell
 $ ./glem test 128 64
 ```
 

@@ -27,7 +27,7 @@ You will notice that the make process that you initiated receives a hang-up sign
 
 One obvious and not so great way to deal with this is to start is with `nohup` and push it to background with a `&` like this.
 
-``` shell
+```shell
 $ nohup make &
 ```
 
@@ -62,7 +62,7 @@ For example, to detach from the session, you will have to press <kbd>Ctrl</kbd> 
 
 You can You can use `screen -ls` to see the screen sessions that are active. Since we have started only one session so far, your output will list only one session. The following is an example of a screen listing.
 
-``` text
+```text
 There is a screen on:
     13866.pts-7.extrops (Sunday 11 June 2017 04:13:31  IST) (Detached)
 1 Socket in /var/run/screen/S-siddharth.
@@ -72,7 +72,7 @@ Currently there is only one screen running in my computer, so the listing return
 
 To re attach to the session we earlier detached from, you can do,
 
-``` shell
+```shell
 $ screen -x
 ```
 
@@ -107,7 +107,7 @@ Like vim and bash, the runtime behavior of screen can be customized with a scree
 
 If you are a screen beginner, then this is a good starting point. Copy the following lines to `~/.screerc` and checkout it's effects.
 
-``` text
+```text
 startup_message off
 term screen-256color
 setenv LC_CTYPE en_US.UTF-8

@@ -49,7 +49,7 @@ Here is the entire setup. It shows how the R/W pin is held low throughout the in
 
 Here also we will be using the same functions. Only the lcd.c and lcd.h file have to be modified, the main.c has also been changed but the logic is the same. Also most of the function and how they behave has been discussed in my previous post, [programming LCD in 8 bit mode](/programming-lcd-in-8-bit-mode/). So I will not rehash them here and make this post lengthy.
 
-``` c
+```c
 /*
  * File Name: basic_4bit_interface
  * Author: Siddharth Chandrasekaran

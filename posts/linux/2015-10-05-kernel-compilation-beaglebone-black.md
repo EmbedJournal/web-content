@@ -43,7 +43,7 @@ You can download the compiler [here](http://releases.linaro.org/components/toolc
 
 After downloading, extract the compiler using the following command.
 
-``` shell
+```shell
 $ sudo tar xvf gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux.tar.xz -C /opt/
 ```
 
@@ -51,7 +51,7 @@ The compiler will be extracted to /opt/ directory. opt is nothing but the option
 
 Go to /opt/ directory and change the directory name for adaptivity. Then, add the compiler to PATH variable.
 
-``` shell
+```shell
 $ cd /opt/
 $ sudo mv gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/ gcc-arm-linux
 $ export PATH=$PATH:/opt/gcc-arm-linux/bin
@@ -59,7 +59,7 @@ $ export PATH=$PATH:/opt/gcc-arm-linux/bin
 
 After installing the compiler you can verify it using the following command,
 
-``` shell
+```shell
 $ arm-linux-gnueabihf-gcc --version
 arm-linux-gnueabihf-gcc (crosstool-NG linaro-1.13.1-4.8-2014.04 - Linaro GCC 4.8-2014.04) 4.8.3 20140401 (prerelease)
 ```
@@ -70,13 +70,13 @@ arm-linux-gnueabihf-gcc (crosstool-NG linaro-1.13.1-4.8-2014.04 - Linaro GCC 4.8
 
 After installing the compiler, clone the kernel source for BeagleBone Black from GitHub using
 
-``` shell
+```shell
 $ git clone https://github.com/beagleboard/linux.git
 ```
 
 Go to the linux directory and ensure that you have cloned the correct repo by executing the following command
 
-``` shell
+```shell
 $ cd linux
 $ git remote -v
 origin https://github.com/beagleboard/linux.git (fetch)
@@ -89,20 +89,20 @@ U-boot is an open source universal bootloader for Linux systems. It supports fea
 
 Clone u-boot using the following command
 
-``` shell
+```shell
 $ git clone git://git.denx.de/u-boot.git u-boot/
 ```
 
 Before, compiling U-Boot we need to configure it. Thanks to the availability of configuration files in the configs/ directory under u-boot. We can configure using the am332x\_boneblack\_defconfig file. All the configuration will be written to .config file located in u-boot/ directory. By default you will not be able to view the .config file. To view give ls -a command.
 
-``` shell
+```shell
 $ cd u-boot
 $ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- am335x_boneblack_defconfig
 ```
 
 After configuring, u-boot can be cross compiled using the following command.
 
-``` shell
+```shell
 $ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
 ```
 
@@ -114,7 +114,7 @@ For now, we will not use the above mentioned files for booting. But, during late
 
 For deploying kernel from sd card, we need to format it and place the files accordingly. For this process, "Gparted" tool is needed. Install Gparted by the following command.
 
-``` shell
+```shell
 $ sudo apt-get install gparted
 ```
 
@@ -140,7 +140,7 @@ Finally, click the green tick mark at the menu bar. The partition will be create
 
 Before compiling the kernel we need to configure it. It will be hard for the newbies. Once again, thanks to the kernel developers for providing all configurations in a single file. Go to the kernel directory and issue the following command.
 
-``` shell
+```shell
 $ sudo make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- bb.org_defconfig
 ```
 
@@ -148,7 +148,7 @@ This will write the configurations in file bb.org_defconfig to .config file.
 
 Then compile the kernel.
 
-``` shell
+```shell
 $ sudo make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- uImage dtbs LOADADDR=0x80008000 -j4
 ```
 
@@ -158,7 +158,7 @@ After compiling you can find the image files in "arch/arm/boot/" directory. Copy
 
 Then, create a file named as "uEnv.txt" in BOOT partition and copy the following code to it.
 
-``` shell
+```shell
 console=ttyS0,115200n8
 netargs=setenv bootargs console=ttyO0,115200n8 root=/dev/mmcblk0p2 ro rootfstype=ext4 rootwait debug earlyprintk mem=512M
 netboot=echo Booting from microSD ...; setenv autoload no ; load mmc 0:1 ${loadaddr} uImage ; load mmc 0:1 ${fdtaddr} am335x-boneblack.dtb ; run netargs ; bootm ${loadaddr} - ${fdtaddr}
@@ -181,7 +181,7 @@ You can download RFS [here](https://www.dropbox.com/s/k93doprl261hwn2/rootfs.tar
 
 Instead of downloading RFS, we can create our own [custom RFS using BusyBox](/custom-rfs-beaglebone-black/), which is an elaborate process and hence merits the need for a separate post. For the sake of simplicity, we can download and uncompress the RFS.
 
-``` shell
+```shell
 $ sudo tar -xvf rootfs.tar.xz -C /media/mani/RFS/
 $ cd /media/mani/RFS/rootfs/
 $ sudo mv ./* ../
@@ -195,7 +195,7 @@ The above command will uncompress the tar file and will place it in the RFS part
 
 We need modules for proper working of the kernel. So, install the kernel modules by the following command.
 
-``` shell
+```shell
 $ sudo make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j4 modules
 $ sudo make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=/media/mani/RFS/ modules_install
 ```

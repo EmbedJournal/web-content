@@ -24,7 +24,7 @@ For learning C from it's very basic, I would suggest [C and UNIX: Tools for Soft
 
 In assembly there are direct instruction for rotate left and rotate right. But in C there is no straight forward method to do so. Here is a snippet that will let you do just that. And the best part is that, PIC C compiler will automatically know what you are trying to do and will replace this line of C with the corresponding assembly instruction.
 
-``` c
+```c
 val = ( (val >> 1) | (val << 7) );
 ```
 
@@ -34,7 +34,7 @@ The `val << 7` is used as I assumed an 8 bit variable is being rotated. If you w
 
 In embedded software applications, we will always will be setting and clearing bits. Some of us feel like using the mask and set/clear strategy each time there is a need to set and clear bits. But when working with 32 bit systems (ARM), it is not practical to write masks each time we need to set/clear a single bit. That's when functions are written to handle this. But having a function will occupy memory. A better alternative for this is to have code macros to take care of this at compile time.
 
-``` c
+```c
 #define BitSet ( var, bitnum ) ( (var) |= 1UL << (bitnum) )
 #define BitClr ( var, bitnum ) ( (var) &= ~(1UL << (bitnum) ) )
 ```
@@ -49,7 +49,7 @@ The bit field is a lesser known feature of the C programming language (at least 
 
 I will take the liberty to assume you have a working knowledge on structures and unions to understand bit fields. The size of a structure is the sum of the size of all its member variables where as in the case of a union, its size is given by the size of its biggest member. Union is used when only either of its member is needed at any time.
 
-``` c
+```c
 typedef union {
         uint8_t data;
         struct {
@@ -93,7 +93,7 @@ One way is by using a globally declared array and let the functions make use of 
 
 Not clear? consider this case, 2 arrays have to be added in a separate function and store them in another array. Here is how you can do this,
 
-``` c
+```c
 int main()
 {
     int arr1[5] = { 1, 4, 5, 7, 9 };    // Array No 1
@@ -126,7 +126,7 @@ Sometimes I have to swap two variables.
 
 You can avoid using a temporary variable using an EXOR swap like following :
 
-``` c
+```c
 a = a ^ b
 b = a ^ b
 a = a ^ b

@@ -189,7 +189,7 @@ For example, the Display ON/OFF Control command has the following fields,
 
 Here, D4 to D7 are 0, D3 is 1 and RS and R/W are held low. These are all constant values and hence have to be used as such. But the, bits D0 to D2 are all variables. Depending on the values return at positions B, C and D the following action are performed by the LCD controller,
 
-``` text
+```text
 D set to 0/1 Turns the display ON/OFF
 C set to 0/1 Turns the Cursor ON/OFF
 B set to 0/1 Character at the cursor is static/blinking

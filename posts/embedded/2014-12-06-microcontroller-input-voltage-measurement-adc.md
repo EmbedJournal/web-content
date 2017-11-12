@@ -51,7 +51,7 @@ So, 2 PN junction diodes in series is your best bet at getting a reasonably accu
 
 To get the actual system voltage from the ADC, you should do something like this,
 
-``` c
+```c
 #define ADC_MAX_COUNT   1023   // 2^10 = 1024
 #define BANDGAP_VOLTAGE 1400   // in mV
 

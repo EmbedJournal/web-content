@@ -29,7 +29,7 @@ So if you write 1 to the data bus and enable the first segment, you will have to
 
 If you did it correctly, you should see a static 1234 appear over the 4 digits of the 7 segment display. This is how you should program the above logic.
 
-``` c
+```c
 #include <xc.h>
 #include <stdint.h>
 #include "delays.h"
@@ -81,7 +81,7 @@ In the main function, the controller first checks if there is a counter overflow
 
 Here is a program to implement the above logic in embedded C.
 
-``` c
+```c
 #include <xc.h>
 #include <stdint.h>
 #include "delays.h"

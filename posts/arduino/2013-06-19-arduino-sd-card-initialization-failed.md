@@ -24,7 +24,7 @@ I have some experience with Arduino in the past (all good ones), and I expected 
 
 Then after some research I discovered that, the Arduino SD library is just a colorful wrapper for the [SDfatlib](https://code.google.com/p/sdfatlib/), and the actual library has much more options and can be used to debug properly. When I tested the quick start sketch form the newly installed library, I got this error message,
 
-``` text
+```text
 SD chip select is the key hardware option.
 Common values are:
 Arduino Ethernet shield, pin 4
@@ -53,7 +53,7 @@ Most of the Ethernet shields have SD card slot, it would be pointless buying one
 
 So after making the change, the CardInfo sketch should look like this.
 
-``` text
+```text
 /*************** Some code Here *************************/
 Serial.print("\nInitializing SD card...");
 // On the Ethernet Shield, CS is pin 4. It's set as an output by default.

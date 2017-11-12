@@ -31,7 +31,7 @@ This is perhaps the single most common type of leak that I have come across. The
 
 This can be better explained with an example.  Let's assume method `print_model_name` gets a cars model name (dynamically allocated pointer for some odd reason!) and prints it.
 
-``` c
+```c
 int get_print_model_name(car_t *car)
 {
     char *model = malloc(sizeof(CAR_MODEL_STR));
@@ -47,7 +47,7 @@ int get_print_model_name(car_t *car)
 
 So far so good. Later, a maintenance programmer drops by and find that `get_car_model_name` returns error for cars that were manufactured before 1999 (not relevant, but maybe they didn't have a model number back them). He goes ahead and makes the changes necessary to handle this case. After the change, the code looked like this:
 
-``` c
+```c
 int get_print_model_name(car_t *car)
 {
     char *model = malloc(sizeof(CAR_MODEL_STR));
@@ -79,7 +79,7 @@ strdup is a method that is used to duplicate a given string on to an allocated p
 
 Normally, we tend to subconsciously name the duped pointer with a similar name as that of the original pointer. Some prefer adding the suffix `_dup` or just a number to indicated its the same string. What ever the case, they end up calling free on the original pointer instead of the duped one.
 
-``` c
+```c
 void print_string(const char *p)
 {
     char *p1 = strdup(p);
@@ -93,7 +93,7 @@ The sad truth of the matter is, GCC doesn't catch this sort of errors (even with
 
 With complex problem statements, we are forced to use complex data structures. Often times, we allocate memory for a structure and then allocated memory for some members within the structure. For example,
 
-``` c
+```c
 struct sensor_data {
     int sendor_id;
     char *sensor_name;
@@ -118,7 +118,7 @@ Here the returned pointer to `struct sensor_data` has two allocated pointers ins
 
 The way this is done is create a dedicated destructor method to free all such child allocations and then free the parent itself.
 
-``` c
+```c
 void destroy_sensor_data(struct sensor_data *d)
 {
     free(d->sensor_name);
@@ -134,7 +134,7 @@ Pointer arithmetics is so popular that, pointer without arithmetic operations on
 
 You allocate a pointer to a series of integers. Then, by force of habit, inside loops you increment the pointer dereferencing it at each iteration to store a value that that offset. The end result, you have an array of non-free-able integers.
 
-``` c
+```c
 int *get_numbers(int till)
 {
     int i;

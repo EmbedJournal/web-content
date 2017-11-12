@@ -28,7 +28,7 @@ There was not much to change in the code that we wrote for the matrix keypad int
 
 **Note:** The code in the [4x4 matrix keypad interface](/interface-4x4-matrix-keypad-with-microcontroller/) was written for the C18 compiler and this one below is for the HI-Tech C Compiler for PIC Microcontrollers. If you are not familiar with this compiler, have a look at my previous post on [migrating to the Hi-Tech C compiler](/migrating-to-hi-tech-c-compiler-from-the-microchip-c18-compiler/) its not really that difficult.
 
-``` c
+```c
 // Matrix Keypad Interface with Interrupt on Change  /////////////////////////
 #include <p18f4520.h>
 #include "delay.h"

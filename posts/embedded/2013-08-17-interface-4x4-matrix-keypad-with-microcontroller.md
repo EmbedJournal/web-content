@@ -68,7 +68,7 @@ Once this is detected, its up to us to name it or provide it with a task on the 
 
 Now lets see how the above logic can be implemented in embedded C. Here is the program I wrote to test it. This code is for PIC microcontrollers with c18 lite version compiler. I as usual, used a lot of macros so if you are an Arduino user you could easily make some alterations to the code and use it. The basic concept for keypad scan is inside the while(1) loop.
 
-``` c
+```c
 #include<p18f4520.h>
 #include<delays.h>
 #pragma config OSC=HS,WDT=OFF,FCMEN=ON,XINST=OFF,IESO=OFF,LVP=OFF

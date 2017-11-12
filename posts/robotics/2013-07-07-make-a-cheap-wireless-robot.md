@@ -53,7 +53,7 @@ I wanted to implement this setup in [Balckboy](/line-follower-robot/). All I had
 
 Since the Blackboy already has a motor driver and a PIC microcontroller in it, I had to write a small program to get these values as inputs and move the robot accordingly instead of the much simpler alternative.
 
-``` c
+```c
 /*
  * File Name: remote_car
  * Author: Siddharth Chandrasekaran

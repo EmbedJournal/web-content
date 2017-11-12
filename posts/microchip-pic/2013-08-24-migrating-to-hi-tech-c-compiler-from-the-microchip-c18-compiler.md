@@ -40,7 +40,7 @@ After the installation, you can see the compiler in the list of available compil
 
 In all the programs, you will have to add this line, `#include<htc.h>` this will include header file for the PIC MCU that you choose while creating the project. Once this is added you will have to add code for the configuration bits. This is really important and most of the time, it will prevent the program from executing if you forget to add the pragma for the configuration bits. I will write a tutorial on configuration bits, their purposes and uses some time soon.
 
-``` c
+```c
 #pragma config OSC=HS,WDT=OFF,FCMEN=ON,XINST=OFF,IESO=OFF,LVP=OFF
 ```
 
@@ -48,7 +48,7 @@ After this its the user's space and you can add code and include custom header f
 
 Timer 0 is configured to interrupt every 20 milliseconds. In the ISR the LED pin (RD0) is toggled every 5th time the interrupt occurs. hence this gives a delay of 100 milliseconds.
 
-``` c
+```c
 #include<htc.h>
 #pragma config OSC=HS,WDT=OFF,FCMEN=ON,XINST=OFF,IESO=OFF,LVP=OFF
 

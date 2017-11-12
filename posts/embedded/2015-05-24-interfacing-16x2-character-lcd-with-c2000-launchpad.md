@@ -34,7 +34,7 @@ Here, two delays were used. One is small delay of 50 microseconds and another on
 
 After selecting the 8 bit mode, the commands for clearing the display, setting entry mode (cursor moving direction), blinking cursor and placing the cursor at home are given.
 
-``` c
+```c
 /* Initializes LCD */
 void InitializeLCD(void)
 {
@@ -68,7 +68,7 @@ void InitializeLCD(void)
 
 This function sends command to the LCD. First, the Register Select pin is set low before writing command. After that the command is written with the help of SendByte function. At the end of the function a small delay is given.
 
-``` c
+```c
 /* Writes a command byte to LCD */
 void WriteCommandLCD(unsigned char CommandByte)
 {
@@ -84,7 +84,7 @@ Here, the data pin is set to high or low according to the command or data receiv
 
 At the end, the enable pin is set high and low as negative edge triggering is required for transferring the data from the register to the LCD. For this, a short delay has been generated using the for loop.
 
-``` c
+```c
 /* Send a byte of data to LCD */
 void SendByte(unsigned char Value)
 {
@@ -142,7 +142,7 @@ void SendByte(unsigned char Value)
 
 This function receives the line number along with the message to be shown in the LCD. Here, the message is received in the form of pointer array. For loop is used to send each character to the LCD. Maximum of 16 characters can be displayed in a row. Line number 1 and 2 are used to select the rows 1 and 2.
 
-``` c
+```c
 /* Displays a message on LCD */
 void DisplayLCD(char LineNumber,char *Message)
 {

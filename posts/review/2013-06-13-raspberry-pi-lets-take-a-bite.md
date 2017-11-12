@@ -36,7 +36,7 @@ Raspberry Pi has no RTC and hence no built in time stamping. This issue must be 
 
 ### Raspberry Pi Pin Description:
 
-``` text
+```text
 /* SPI */
 GPIO 10 - MOSI
 GPIO 9 - MISO

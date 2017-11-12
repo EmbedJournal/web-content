@@ -71,7 +71,7 @@ Every time, the counter variable value becomes equal to the width variable's val
 
 Assuming you have configured the timer interrupt to fire at 0.1ms and you have defined the variable count and widthCount, here is how you ISR should look like.
 
-``` c
+```c
 void interrupt timerISR(void)
 {
     if(timer_interrupt_flag) {

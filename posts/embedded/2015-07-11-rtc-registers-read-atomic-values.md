@@ -58,7 +58,7 @@ Above all, this fix isn't portable. Tomorrow you may change the RTC and you are 
 
 Fortunately for us, there is a simple enough software fix to overcome this. All you have to do is read the time more one more time if the seconds is zero from the last read. So you will have something like this in your get time routine,
 
-``` c
+```c
 getRTCTime(&t);
 if (t.ss == 0)
     getRTCTime(&t);

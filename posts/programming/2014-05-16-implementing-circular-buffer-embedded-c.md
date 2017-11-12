@@ -33,7 +33,7 @@ The essence is that every time you try to push, you check for `is_buffer_full` c
 
 Armed with this knowledge, I will proceed to define the data types!
 
-``` c
+```c
 typedef struct {
     uint8_t * const buffer;
     int head;
@@ -58,7 +58,7 @@ Also, if you notice, we hold one byte as reserved space in the buffer. On first 
 
 So, in conclusion, for small and fixed size data units, just reserve one byte while you can still keep your sanity.
 
-``` c
+```c
 int circBufPush(circBuf_t *c, uint8_t data)
 {
     // next is where head will point to after this write.
@@ -83,7 +83,7 @@ Here, the tail _can_ be moved to the next offset before the data has been read s
 
 To maintain consistency with such implementations, I will read data and then move the tail pointer.
 
-``` c
+```c
 int circBufPop(circBuf_t *c, uint8_t *data)
 {
     // if the head isn't ahead of the tail, we don't have any characters
@@ -109,7 +109,7 @@ It also goes without saying that the buffer has to be global or it has to be in 
 
 To make maintenance a little easier, you could use this macro but compromises code readability for new users.
 
-``` c
+```c
 #define CIRCBUF_DEF(x,y)          \
     uint8_t x##_dataSpace[y];     \
     circBuf_t x = {               \
@@ -122,7 +122,7 @@ To make maintenance a little easier, you could use this macro but compromises co
 
 So for example if you need a circular buffer of length 32 bytes, you would do something like this in your application,
 
-``` c
+```c
 CIRCBUF_DEF(myDatBuf, 32);
 
 void thisIsYourAppCode()

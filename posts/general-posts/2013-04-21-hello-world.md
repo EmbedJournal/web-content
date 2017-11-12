@@ -12,7 +12,7 @@ tags: [ "Intro" ]
 
 There is always a convention, and I don't plan on violating any today.
 
-``` c
+```c
 #include <stdio.h>
 
 void main()

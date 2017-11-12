@@ -42,13 +42,13 @@ Hence the net count C, after which the timer will cause an interrupt when both p
 
 In case of an UP-Counter,
 
-``` text
+```text
 C = N x [timer-register-value] x M
 ```
 
 In case of A DOWN-counter,
 
-``` text
+```text
 C = N x [(timer-register-value)-(maximum-value-timer-register)] x M
 ```
 
@@ -62,7 +62,7 @@ But not all the controllers take the machine clock as it is, it is scaled down b
 
 For now we will consider the PIC microcontrollers. Here the Fosc is divided by a factor of 4. So we have,
 
-``` text
+```text
 Fosc = 20Mhz
 Fosc/4 = 5MHz
 T = 1/(Fosc/4)

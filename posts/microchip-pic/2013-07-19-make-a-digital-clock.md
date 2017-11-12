@@ -42,7 +42,7 @@ For making this digital clock, you will have to acquire information on the time,
 
 Here is a function that basically calls the other subroutines that actually does all the processing of the data. So this is just a wrapper function so that we don't have to call the individual functions separately.
 
-``` c
+```c
 void display(void)
 {
     time(get_time(2),get_time(1),get_time(0));
@@ -59,7 +59,7 @@ This function is used to display the time in the LCD display. It takes the time 
 
 Note: the variable units and tens are global variable and are updated every time the decode() is called.
 
-``` c
+```c
 void time(unsigned int hours,unsigned int minutes,unsigned int seconds)
 {
     decode(hours); // separates the variable into higher and lower nibble
@@ -109,7 +109,7 @@ The date, month and year values read from the RTC are provided as parameters for
 
 Note: the variable units and tens are global variable and are updated every time the decode() is called.
 
-``` c
+```c
 void date(unsigned int date, unsigned int month,unsigned int year)
 {
     LCD_cmd(0x9A);
@@ -133,7 +133,7 @@ void date(unsigned int date, unsigned int month,unsigned int year)
 
 The day is represented as a number (with 0 representing Sunday) in the RTC time keeping registers. A switch case was the most common way to decode it into the actual day and print it on the LCD display
 
-``` c
+```c
 void day(unsigned int disp){
     LCD_cmd(0xD9);
     LCD_data("                ");   // to clear past memory
@@ -159,7 +159,7 @@ void day(unsigned int disp){
 
 Besides these functions, we will need a function to decode the data into the units and tens place. This function also updates the values of the global variables units and tens.
 
-``` c
+```c
 // Function separates the variable into higher and lower nibble
 void decode(unsigned int val)
 {

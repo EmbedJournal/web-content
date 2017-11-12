@@ -56,7 +56,7 @@ For those who don't already know, `#ifdef MACRO_NAME` checks if macro `MACRO_NAM
 
 So basically, it is an if statement but in terms of pre-processing. Needless to say, the same logic applies to the if-else statements.
 
-``` c
+```c
 /*
  * File Name: stepper.c
  * Author: Siddharth Chandrasekaran

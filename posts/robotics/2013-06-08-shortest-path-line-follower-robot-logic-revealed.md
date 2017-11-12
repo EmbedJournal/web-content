@@ -91,14 +91,14 @@ The procedure for default right algorithm is as follows,
 
 By following algorithm, you should have a direction array like this,
 
-``` c
+```c
 // For default left algorithm:
 dir_arr[20] = { 1 , 1 , 3 , 2 , 1 , 3 , 2 , 4 , 3 , 1 , 4 , 3 , 2 , 2 , 2 };
 ```
 
 which is -> [North , North , South , East , North , South , East , West , South , North , West , South , East , East , East] 
 
-``` c
+```c
 // For default right algorithm:
 dir_arr[20] = { 2 , 3 , 1 , 2 , 4 , 1 , 2 , 3 , 4 , 2 , 4 , 1 , 2 };
 ```
@@ -115,14 +115,14 @@ If there is a South followed by North or vice-verse, then it is a redundant move
 
 Initially, lest assume the direction array to be,
 
-``` text
+```text
 // Initial state.
 [ North, North, South, East, North, South, East, West, South, North, West, South, East] 
 ```
 
 In the 1st pass, we group and remove the following,
 
-``` text
+```text
 // Pass one
 Before = [ North, (North, South), East, (North, South), (East, West), (South, North), West, South, East, East, East ]
 After  = [ North, East, West, South, East, East, East ]
@@ -130,7 +130,7 @@ After  = [ North, East, West, South, East, East, East ]
 
 Similarly, we group and remove another from the resultant of previous reduction.
 
-``` text
+```text
 // Pass two
 Before = [ North, (East, West), South, East, East, East ] 
 After  = [ North, South, East, East, East ] 
@@ -138,7 +138,7 @@ After  = [ North, South, East, East, East ]
 
 Finally, there is just one more thing we can remove,
 
-``` text
+```text
 // Pass three.
 Before = [ (North, South), East, East, East ] 
 After  = [ East , East , East ]

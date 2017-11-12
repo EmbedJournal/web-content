@@ -20,7 +20,7 @@ Lets get started. I use Ubuntu (current version) . If you have some other flavor
 
 **Step1 :** Open a new terminal and type the following command to install the package from the Ubuntu repositories.
 
-``` shell
+```shell
 # apt-get install msmtp-mta
 ```
 
@@ -28,7 +28,7 @@ You have to enter your system password to provide administrative rights. Say 'y'
 
 **Step2 :** Now fire up you favorite text editor by typing
 
-``` shell
+```shell
 $ vim ~/.msmtprc
 ```
 
@@ -36,7 +36,7 @@ If Vim is not already installed do a 'sudo apt-get install vim' install vim and 
 
 Vim is one of the most powerful text editors in the Linux Environment consider mastering it. Once inside the file you have to hit 'i' to enter the insert mode, then copy the following code into the editor.
 
-``` shell
+```shell
 #Gmail account
 
 defaults
@@ -60,7 +60,7 @@ then press ESC to enter into the command mode in vim then type ':wq' to save and
 
 **Step3 :** Now this is lame.. any one who has access to you computer could open this file to see your password. So you have to modify the access permit for this file to the root only (you). So type the following command
 
-``` shell
+```shell
 $ chmod 600 .msmtprc
 ```
 
@@ -69,19 +69,19 @@ For more details see manual page of chmod.
 **Step4 :** Now we have configured the gmail settings and your computer should not have any trouble talking to the remote server. We have to set up a command-line email program to talk to the mail-server. So install mailx.
 
 
-``` shell
+```shell
 # apt-get install heirloom-mailx
 ```
 
 **Step5 :** Now configure Mailx by creating a file called '.mailrc' in your home directory.
 
-``` shell
+```shell
 $ vim ~/.mailrc
 ```
 
 follow the same procedure as in step2 to copy the following code into the newly created text file.
 
-``` shell
+```shell
 set sendmail="/usr/bin/msmtp"
 set message-sendmail-extra-arguments="-a gmail"
 ```
@@ -92,13 +92,13 @@ This should be enough to set up gmail to work form the command line. If you are 
 
 ****Type this command and hit enter.
 
-``` shell
+```shell
 $ mail -s "subject" -a "attachment-if-any" "receiver@some-domain.com"
 ```
 
 Now you have to type your message here and then hit enter and come to a new line and press CTRL+D you should see a EOT at the line this indicates that you have successfully sent the mail. The -a <A attachmentA > is completely optional so you can omit it. You can also use IO redirection operators in Linux to transfer the contents of a file into a mail like,
 
-``` shell
+```shell
 $ mail -s "subject" "receiver@some-domain.com" < message.txt
 ```
 

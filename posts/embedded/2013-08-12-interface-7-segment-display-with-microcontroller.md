@@ -117,7 +117,7 @@ In any kind of application, it's good practice to have a Look-up-Table for the d
 
 Once you have all the values to be written to the display you have to create the lookup table. The lookup table is nothing but an array which has all the above values. So the code looks into this array and fetches the data to be written to the display.
 
-``` c
+```c
 // Common Cathode Configuration
 unsigned char lookup[10] = {
     0x3f, 0x06, 0x5b, 0x4f, 0x66,

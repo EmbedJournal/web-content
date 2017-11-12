@@ -22,7 +22,7 @@ You can set up your own git repository in another location and use that as the r
 
 If this is the first time you are using git, then have to tell git who you are so your commits are tagged accordingly.
 
-``` shell
+```shell
 $ git config --global user.name "Your Name Here"
 $ git config --global user.email "Your Email"
 ```
@@ -33,7 +33,7 @@ You can omit the --global flag if you want a per-repository based configuration.
 
 If you choose to make a copy of an existing git repository, you do what is called as a _clone_. This creates a local copy of the files. Be careful of what you clone, some projects can be a massive (just over few gigs!).
 
-``` shell
+```shell
 $ git clone https://github.com/username/my-repositoy.git
 ```
 
@@ -43,7 +43,7 @@ Once you have either created or cloned the repository, you can start modifying t
 
 Once you have edited some files, they are marked as _modified/added_. You can see this by typing `git status`. But these changes are locally made. You will have to stage them for a commit. Git had what is called as a staging area, where it lines up all the items that are to saved to the version history. For your _modified/added_ files to get to this area, you will have to _add_ them there.
 
-``` shell
+```shell
 $ git add file-name  # to add file file-name to git.
 $ git add dir-name   # to start tracking changes made to directory dir-name.
 $ git add -A         # to add all. be careful
@@ -54,7 +54,7 @@ So far so good. You have successfully added files and directories into your comm
 ### Commit local changes
 Think of commit as a way to indicate changes made for a specific purpose on a bunch of files. This indication is given with a commit message.
 
-``` shell
+```shell
 $ git commit -m 'my first commit'
 ```
 
@@ -63,7 +63,7 @@ Once your changes have been committed, if you run a `git status` again, you will
 ### Push local commits to remote
 Git is a distributed version control system. So you will have to push your changes to a remote machine for others to get your changes.
 
-``` shell
+```shell
 $ git push origin master
 ```
 

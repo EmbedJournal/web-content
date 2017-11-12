@@ -39,7 +39,7 @@ Let's assume these are the only four possible conditions for the sake of underst
 
 Case 1 is when the robot has to move forward as only the center sensor is low. Similarly Case 2 is towards right, Case 3 is towards left and case 4 is stop as all the sensors read high. This is how your code should look like (the terms, LEFT\_SENSOR, RIGHT\_SENSOR, CENTER\_SENSOR, GO\_FRONT, TURN\_RIGHT, TURN\_LEFT, STOP are all code macros for the corresponding pin in the microcontroller).
 
-``` c
+```c
 while (1)
 {
     if((LEFT_SENSOR==1)&&(CENTER_SENSOR==0)&&(RIGHT_SENSOR==1))
@@ -63,7 +63,7 @@ Now you have to define two kinds of left turns. One of it will rotate your right
 
 For normal conditions use the "Left" or "Right" turn. When the bot encounters a right turn or an acute turn use the "Power Left" and "Power Right" this way your bot will respond faster to these cases and act accordingly. Now your code should have these lines too,
 
-``` c
+```c
 if ((LEFT_SENSOR==0)&&(CENTER_SENSOR==0)&&(RIGHT_SENSOR==1))
     LATB |= POWER_RIGHT  // Case 2
 if ((LEFT_SENSOR==1)&&(CENTER_SENSOR==0)&&(RIGHT_SENSOR==0))
