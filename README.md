@@ -1,4 +1,4 @@
-[!EmbedJouranl](https://embedjournal.com/assets/images/logo/embedjournal-120px.png)
+![EmbedJouranl](https://embedjournal.com/assets/images/logo/embedjournal-120px.png)
 
 EmbedJournal.com Contents
 =========================
