@@ -21,7 +21,7 @@ Lets get started. I use Ubuntu (current version) . If you have some other flavor
 **Step1 :** Open a new terminal and type the following command to install the package from the Ubuntu repositories.
 
 ```shell
-# apt-get install msmtp-mta
+$ sudo apt-get install msmtp-mta
 ```
 
 You have to enter your system password to provide administrative rights. Say 'y' when it asks for you choice after the size of the file to be downloaded is determined.
@@ -70,7 +70,7 @@ For more details see manual page of chmod.
 
 
 ```shell
-# apt-get install heirloom-mailx
+$ sudo apt-get install heirloom-mailx
 ```
 
 **Step5 :** Now configure Mailx by creating a file called '.mailrc' in your home directory.
