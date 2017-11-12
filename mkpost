@@ -26,7 +26,7 @@ use File::Basename;
 
   -d, --draft          Create new draft interactively
   -v, --verify PATH    Verify if a draft is structured correctly
-  -p, --publish PATH   Pubish a draft at POST
+  -p, --publish PATH   Publish a draft at POST
   -w, --wrap PATH      Wrap a draft specified by PATH for email.
   -t, --thumb IMAGE    Create post-thumb.jpg out of IMAGE
   -h, --help           Print this help
@@ -39,11 +39,11 @@ use File::Basename;
 
 my $author_default = {
     name => 'Your-Nick-Name',
-    full_name => 'Fistname Lastname',
+    full_name => 'FistName LastName',
     email => 'you@example.com',
     short_desc => 'A short writeup about yourself.',
     social => {
-        twitter  => 'http://twitter.com/XXX',
+        twitter  => 'https://twitter.com/XXX',
         facebook => 'https://facebook.com/XXX',
         github   => 'https://github.com/XXX',
         linkedin => 'https://in.linkedin.com/in/XXX'
@@ -116,24 +116,26 @@ sub getCategory
 
 sub getInputInteractive()
 {
-    print "\n\t----------------------------------------------------------------------------\n";
-    print "\t   EmbedJournal.com  - Add a brain to eveything with embedded electronics       ";
-    print "\n\t----------------------------------------------------------------------------\n";
+	print "\n\t----------------------------------------------------------------------------\n";
+	print "\t   EmbedJournal.com  - Add a brain to everything with embedded electronics      ";
+	print "\n\t----------------------------------------------------------------------------\n";
 
-    print "\n\tWelcome Author, Give your article a title. be sure to keep the title attractive\n";
-    print   "\tmeaningful and short. This how your post will be called once it is published\n";
-    print   "\tThink what your readers will search for when they have to reach your post. Use\n";
-    print   "\tthose keywords in the post title so your post will be ranked well at google.\n\n";
+	print "\n\t Welcome Author, Give your article a title. be sure to keep the title attractive\n";
+	print   "\t meaningful and short. This how your post will be called once it is published\n";
+	print   "\t Think what your readers will search for when they have to reach your post. Use\n";
+	print   "\t those keywords in the post title so your post will be ranked well at Google.\n";
+	print "\n";
 
-    my $t = readInput("Post title");
+	my $t = readInput("Post title");
 
-    print "\n\tCurrently we support the following categories. Choose the broad field that best\n";
-    print   "\tsuits your content. If your field is not here, or you have some doubts mail one\n";
-    print   "\tother authors and they should be able to help you out.\n\n";
+	print "\n\t Currently we support the following categories. Choose the broad field that best\n";
+	print   "\t suits your content. If your field is not here, or you have some doubts mail one\n";
+	print   "\t other authors and they should be able to help you out.\n"
+	print "\n";
 
-    my $c = getCategory();
+	my $c = getCategory();
 
-    return ($t, $c);
+	return ($t, $c);
 }
 
 sub create_draft()
@@ -208,13 +210,13 @@ sub verify_draft($)
     closedir $dir;
 
     unless ($found_thumb) {
-        print ("Warning: Post doesn't have a thumbnail. It is adviced to add a 165x165 jpg file.\n");
+        print ("Warning: Post doesn't have a thumbnail. It is advised to add a 165x165 jpg file.\n");
         print ("Note: You can create a thumbnail from an existing image with 'mkpost -t path_to_image_file'.\n");
     }
 
-    print ("Warning: Post doesn't have any image. It is adviced to add atleast one image.\n") if ($count == 0);
+    print ("Warning: Post doesn't have any image. It is advised to add at least one image.\n") if ($count == 0);
 
-    print ("Draft vefification was successful!\n");
+    print ("Draft verification was successful!\n");
 }
 
 sub publish_draft()
