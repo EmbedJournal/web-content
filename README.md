@@ -1,8 +1,5 @@
 ![EmbedJouranl](https://embedjournal.com/assets/images/logo/embedjournal-120px.png)
 
-EmbedJournal.com Contents
-=========================
-
 This repository has raw contents of embedjournal.com. Blog posts are written in the familiar [GitHub Flavored Markdown (GFM)](https://github.github.com/gfm/).
 
 If you are planning on writing a blog post to be placed on EmbedJournal.com, you are in the right place, read on. We also suggest you have a look at our [guest blogging policies](https://embedjournal.com/guest-blogging/) if you haven't done so already.
