@@ -87,3 +87,8 @@ $ ./mkpost --wrap drafts/draft-your-post-title/
 ```
 
 Attach the post to an Email and send an email to admin@embedjournal.com copying siddharth@embedjournal.com. We will make the commit for you.
+
+### Other Notes:
+
+  * [GFM emoji cheetsheet](https://www.webpagefx.com/tools/emoji-cheat-sheet/)
+
