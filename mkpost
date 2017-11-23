@@ -130,7 +130,7 @@ sub getInputInteractive()
 
 	print "\n\t Currently we support the following categories. Choose the broad field that best\n";
 	print   "\t suits your content. If your field is not here, or you have some doubts mail one\n";
-	print   "\t other authors and they should be able to help you out.\n"
+	print   "\t other authors and they should be able to help you out.\n";
 	print "\n";
 
 	my $c = getCategory();
