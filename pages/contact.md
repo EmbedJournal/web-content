@@ -12,7 +12,7 @@ Authors may not respond to comments/emails/PMs with questions that,
   * are so poorly constructed that we can't make sense at all.
   * have no obvious reasons for *not* finding resource online.
   * obviously involves us writing elaborate code for you.
-  * have unstructured code in in mail body. Please. You could Attached, Create a public gist or get your HTML email right.
+  * have unstructured code in in mail body. Please no excuses. There are dozens of ways to get it right! And yeah, I'm talking about about [github's gist](https://gist.github.com/) and [patebin](https://pastebin.com/).
 
 If you are still here, then you probably didn’t fall in any of the above traps. You can be sure that someone will write back to you.
 
