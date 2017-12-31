@@ -15,11 +15,11 @@ It's been a while since I wrote my first article and though I need to come up wi
 
 For the sake of this discussion,it is assumed that you have some working knowledge of the Linux operating systems (at least as a user). Needless to say you should have a working bone to follow this tutorial.
 
-### BeagleBone Black
+## BeagleBone Black
 
 BeagleBone Black (BBB), is a popular Single Board Computer (SBC) which was released as a successor to the [BeagleBone or BeagleBone White](/beaglebone-a-quick-review/). If you don't have a BBB, just order one to dive into the world of Embedded Linux. I'm sure that BBB will occupy a special place in your electronics hardware inventory :-).
 
-### Why custom kernel deploying?
+### Why deploy a custom kernel?
 
 Well, I know that this question will be itching your mind. Instead of using the pre-built image, why should we use this method of building our own image and RFS? The answer for this question is, you have to do this in order to get some fun out of BeagleBone. Electronics is fun when you start doing things of your own and also you will learn a lot of things while doing this.
 
@@ -191,7 +191,7 @@ $ sudo rmdir rootfs
 
 The above command will uncompress the tar file and will place it in the RFS partition of SD card. Just replace "mani" with your username in the above command.
 
-**7. Install Kernel Modules**
+### 7. Install Kernel Modules
 
 We need modules for proper working of the kernel. So, install the kernel modules by the following command.
 
