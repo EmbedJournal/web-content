@@ -15,6 +15,8 @@ It's been a while since I wrote my first article and though I need to come up wi
 
 For the sake of this discussion,it is assumed that you have some working knowledge of the Linux operating systems (at least as a user). Needless to say you should have a working bone to follow this tutorial.
 
+{% include toc.html %}
+
 ## BeagleBone Black
 
 BeagleBone Black (BBB), is a popular Single Board Computer (SBC) which was released as a successor to the [BeagleBone or BeagleBone White](/beaglebone-a-quick-review/). If you don't have a BBB, just order one to dive into the world of Embedded Linux. I'm sure that BBB will occupy a special place in your electronics hardware inventory :-).
@@ -35,7 +37,7 @@ For building linux kernel you will need several tools other than BeagleBone. The
   * U-Boot(optional)
   * mkimage
 
-### 1. Installing ARM cross compiler
+## Installing ARM cross compiler toolchain
 
 The first and foremost thing in compiling kernel is installing ARM gcc cross compiler. Since, BeagleBone Black is based on AM335x Sitara Processor, we need to compile the kernel for that environment. There are numerous compilers available online for free but it is important to install a stable one for proper compilation. For instance gcc-arm-linux-gnueabihf compiler available in standard Ubuntu package is an unstable one. So, download a stable compiler. The preferred one is Linaro cross compiler.
 
@@ -64,34 +66,21 @@ $ arm-linux-gnueabihf-gcc --version
 arm-linux-gnueabihf-gcc (crosstool-NG linaro-1.13.1-4.8-2014.04 - Linaro GCC 4.8-2014.04) 4.8.3 20140401 (prerelease)
 ```
 
+## U-boot
 
+U-boot is an open source universal bootloader for Linux systems. It supports features like TFTP, DHCP, NFS etc... In order to boot the kernel, a valid kernel image (uImage) is required.
 
-### 2. Cloning the Kernel
+It is not possible to explain u-boot here, as it is beyond the scope of this post. So, we will see how to produce a bootable image using U-boot. You can either follow the below steps to compile your own U-boot image or you could just get a prebuilt image.
 
-After installing the compiler, clone the kernel source for BeagleBone Black from GitHub using
-
-```shell
-$ git clone https://github.com/beagleboard/linux.git
-```
-
-Go to the linux directory and ensure that you have cloned the correct repo by executing the following command
-
-```shell
-$ cd linux
-$ git remote -v
-origin https://github.com/beagleboard/linux.git (fetch)
-origin https://github.com/beagleboard/linux.git (push)
-```
-
-### 3. Cloning and Compiling U-boot(Optional)
-
-U-boot is an open source universal bootloader for Linux systems. It supports features like TFTP, DHCP, NFS etc... In order to boot the kernel, a valid kernel image (uImage) is required. It is not possible to explain u-boot here, as it is beyond the scope of this post. So, we will see how to produce a bootable image using U-boot.
+### Clone U-boot (Optional)
 
 Clone u-boot using the following command
 
 ```shell
 $ git clone git://git.denx.de/u-boot.git u-boot/
 ```
+
+### Compile U-boot (Optional)
 
 Before, compiling U-Boot we need to configure it. Thanks to the availability of configuration files in the configs/ directory under u-boot. We can configure using the am332x\_boneblack\_defconfig file. All the configuration will be written to .config file located in u-boot/ directory. By default you will not be able to view the .config file. To view give ls -a command.
 
@@ -110,7 +99,28 @@ It will take around 10 to 15 minutes depending on the system configuration. Mine
 
 For now, we will not use the above mentioned files for booting. But, during later stages those will be needed.
 
-### 4. Formatting SD card
+## Building a kernel for beaglebone black
+
+Building a custom kernel for beaglebone black involves the following steps. Feel free to jump to the step you are currently in if you are not looking for a step-by-step guide.
+
+### Cloning the Kernel
+
+After installing the compiler, clone the kernel source for BeagleBone Black from GitHub using
+
+```shell
+$ git clone https://github.com/beagleboard/linux.git
+```
+
+Go to the linux directory and ensure that you have cloned the correct repo by executing the following command
+
+```shell
+$ cd linux
+$ git remote -v
+origin https://github.com/beagleboard/linux.git (fetch)
+origin https://github.com/beagleboard/linux.git (push)
+```
+
+### Formatting the SD card
 
 For deploying kernel from sd card, we need to format it and place the files accordingly. For this process, "Gparted" tool is needed. Install Gparted by the following command.
 
@@ -136,7 +146,7 @@ Click Add button. Then, create another partition for storing RFS by entering the
 
 Finally, click the green tick mark at the menu bar. The partition will be created and you can see two partitions created as BOOT and RFS.
 
-### 5. Compiling kernel
+### Compile Linux kernel
 
 Before compiling the kernel we need to configure it. It will be hard for the newbies. Once again, thanks to the kernel developers for providing all configurations in a single file. Go to the kernel directory and issue the following command.
 
@@ -175,7 +185,7 @@ After completing the above steps you can find the following files in BOOT partit
 
 **Note:** Make sure you have installed mkimage tool and mounted the sd card.
 
-### 6. RFS
+### Root File System (RFS)
 
 You can download RFS [here](https://www.dropbox.com/s/k93doprl261hwn2/rootfs.tar.xz?dl=0).
 
@@ -191,7 +201,7 @@ $ sudo rmdir rootfs
 
 The above command will uncompress the tar file and will place it in the RFS partition of SD card. Just replace "mani" with your username in the above command.
 
-### 7. Install Kernel Modules
+### Install Kernel Modules
 
 We need modules for proper working of the kernel. So, install the kernel modules by the following command.
 
