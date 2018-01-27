@@ -8,7 +8,7 @@ permalink: /kernel-compilation-beaglebone-black/
 dsq_thread_id: "4194274455"
 popular_post: true
 category: "Linux"
-tags: [ "Beagle Bone" ]
+tags: [ "Beagle Bone", "XCompile" ]
 ---
 
 It's been a while since I wrote my first article and though I need to come up with something a little more advanced this time, something which will be perfect for the die-hard Linux users and those who await to get their hands dirty with some kernel grease.

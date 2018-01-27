@@ -6,7 +6,7 @@ thumbnail: post-thumb.jpg
 permalink: /iot-rtos-zephyr-stm32-minimum-system-development-board/
 dsq_thread_id: "N2U5ZmFkNzE5NGQ5"
 category: "Embedded"
-tags: [ "Zephyr", "RTOS", "STM32", "stm32_min_dev" ]
+tags: [ "Zephyr", "RTOS", "STM32", "stm32_min_dev", "XCompile" ]
 ---
 
 If you have been listening closely, you would have heard the buzz around [Zephyr][zephyr-project-home] - a Real Time Operating system (RTOS) for embedded systems. The real buzz comes from the fact that this RTOS is being tweaked for IoT platforms in particular.
