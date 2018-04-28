@@ -22,7 +22,7 @@ There are a number of conditions that can be made over the I2C bus such as start
 
 The timing diagram above has the start sequence shown in the dotted box to the left. Here if you notice the data line SDA is having a High to Low transition when the clock line SCL is HIGH. Under normal circumstances this does not happen as you can see in the subsequent clock pulses that the data line is stable in one state, either HIGH or LOW when the clock line is HIGH. Similarly to the right most side of the diagram you will find another dotted box with the stop sequence (see the one with the solid line inside the box). The data line experiences a LOW to HIGH transition when the clock line is HIGH.
 
-Besides this there is also a Repeated Start condition to continue the interface. The name Repeated Start sequence may sound fancy but that is nothing but a Start sequence that is given once again after a previous Start sequence.
+Besides this there is also a "Repeated Start" condition which allows a master to continue the current transaction without losing atomicity. This is achieved by *NOT* sending a stop after the transaction but sending a Start in its place.
 
 ### Application:
 
