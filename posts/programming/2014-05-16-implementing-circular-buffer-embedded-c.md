@@ -10,28 +10,54 @@ category: "Programming"
 tags: [ "Theory", "Algorithm" ]
 ---
 
-Embedded software often involves state machines, circular buffers and queues. In this article will give you an overview of the data structure and walks you through the steps involved in implementing circular/ring buffers in low memory devices.
+Embedded software often involves state machines, circular buffers and queues. This article will give you an overview of the data structure and walks you through the steps involved in implementing circular/ring buffers in low memory devices.
 
-For those of you who don't know what a circular buffer is, it is data structure where in an array is treated as circular and the indices loop back to 0 after it reaches array length. This is done by having two pointers to the array. One points to the "head" and the other points to the "tail" of the buffer. As data is added to the buffer, the head pointer moves up and as the data is being removed (read) the tail pointer moves up. This is implementation dependent and varies with perspective. So, for the sake of argument we will agree, you _write_ at head and read from _tail_.
+## Theoretical Background
+
+Choice of a good data structure or algorithm for a given problem comes after a deep understanding of the underlying theory. In this section we will go over some of the key aspects and problems of a circular buffer implementation. Hopefully, this will allow you to make informed decisions on the choice of data structure.
+
+### What is a circular buffer?
+
+For those of you who don't know what a circular buffer is, it is data structure where an array is treated/visualized to be circular; that is, the indices loop back to 0 after it reaches array length. This is done by having two pointers to the array, the "head" pointer and the "tail" pointer. As data is added (write) to the buffer, the head pointer moves up. Similarly, when the data is being removed (read) the tail pointer moves up. The definition of head, tail, their movement direction and write and read location are all implementation dependent. So, for the sake of this discussion, we will agree, that a _write_ is done at head and read at _tail_.
 
 Here is a nice GIF that [Wikipedia](https://en.wikipedia.org/wiki/Circular_buffer) had,
 
 {% include image.html src="circular-buffer-animation.gif" %}
 
-The picture says it all. The animation is very fast and may take some time iterations of watching the animation before you notice all the cases involved but do spend the time it gives a visual representation of the memory and pointers.
+The picture says it all. The animation is very fast and may take some iterations before you notice all the cases involved but do spend the time it gives a visual representation of the memory and pointers that will be used in later parts of this post.
 
-### Full vs Empty
+### Synchronization and race conditions
 
-The next big thing about circular buffers is that there is no "clean way" to differentiate the buffer full empty cases. This is because at both cases, head is equal to tail. There are a lot of ways/workarounds to deal with this issue but most of them are not very readable. I am presenting a way that is fairly readable.
+I'm sure you have come across a race condition due to lack of synchronization in your programming career. Most people seem to think they don't apply to the low memory embedded world (which is in verge of extinction) where there is only one thread of execution. On the contrary, they do exist (think of ISRs here), if not more predominantly.
 
-In this method, there are two critical cases (boundary conditions) that have to be considered while implementing a circular buffer,
+Circular buffers are excessively used to solve the produce-consumer problem. That is, one thread of executing is responsible for data production and another for consumption. In the very low to medium embedded devices, the producer is often an ISR (data produced from sensors) and consumer is the main event loop.
 
-  * Head is equal to tail -> the buffer is empty
-  * (Head + 1) is equal to tail -> the buffer is full
+The nice thing about circular buffers is that it can be implemented without the need for locks in a single producer and single consumer environment. This makes it an ideal data structure for bare-metal embedded programs. The bottom line is that it _has_ to be implemented correctly to be free of a race.
 
-The essence is that every time you try to push, you check for `is_buffer_full` condition and every time there is pop, you check for `is_buffer_empty`.
+### The full vs empty problem
 
-Armed with this knowledge, I will proceed to define the data types!
+The next big thing about circular buffers is that there is no "clean way" to differentiate the buffer full vs empty cases. This is because at both cases, head is equal to tail. There are a lot of ways/workarounds to deal with this but most of them introduce a lot of complexity and hinders readability. Here, I'm presenting a method that is fairly straightforward (IMHO) and readable.
+
+In this method, we deliberately use only `n-1` elements in the buffer. The last element is used (more like a flag) to differentiate between empty and full cases. By this logic,
+
+  * if head is equal to tail: the buffer is empty
+  * if (head + 1) is equal to tail -> the buffer is full
+
+In essence, at every push, you check for `is_buffer_full` condition and every pop, you check for `is_buffer_empty`.
+
+### Overwrite or discard when full?
+
+This is the last question that pops up regarding circular buffers. Whether new data has to be discarded or should it overwrite existing data when the buffer is full. The answer is, there is no clear advantage of one over the other, and most of the time its implementation specific. If the most recent data makes more sense to your application, then go with the overwrite approach. On the other hand, if data has to processed on a first-come first-serve mode, then discard.
+
+The following implementation will discard new data when the buffer is full.
+
+## Circular buffer implementation
+
+Now that we have dealt with the theory, let's proceed with the implementation by defining the data types and subsequently the core, push and pop methods.
+
+In push and pop routines, we will compute the 'next' offset points to the location that the current write-to/read-from will happen. As discussed earlier, if the next location points to the location pointed by the tail then we know that the buffer is full, and we don't write data into the buffer (return an error). Similarly, when the head is equal to tail we know that buffer is empty and nothing can be read from it.
+
+### Data structure definition
 
 ```c
 typedef struct {
@@ -42,15 +68,13 @@ typedef struct {
 } circBuf_t;
 ```
 
-There goes our primary structure to handle the buffer and its pointers. Notice that buffer is `uint8_t * const buffer` . `const uint8_t *` is a pointer to a byte array of constant elements, that is the value being pointed to can't be changed but the pointer itself can be. On the other hand `uint8_t * const` is a constant pointer to an array of bytes in which the value being pointed to can changed but the pointer cannot be changed.
+There goes our primary structure to handle the buffer and its pointers. Notice that buffer is `uint8_t * const buffer`. `const uint8_t *` is a pointer to a byte array of constant elements, that is the value being pointed to can't be changed but the pointer itself can be. On the other hand `uint8_t * const` is a constant pointer to an array of bytes in which the value being pointed to can changed but the pointer cannot be changed.
 
-This is done so that you will be able to make changes to the buffer but you will not be able to accidentally orphan the pointer. This is a very good safety measure and I strongly suggest you not to skip that part.
-
-In push and pop routines, we will compute the 'next' offset points to the location that the current write-to/read-from will happen. As discussed earlier, if the next location points to the location pointed by the tail then we know that the buffer is full, and we don't write data into the buffer (return an error). Similarly, when the head is equal to tail we know that buffer is empty and nothing can be read from it.
+This is done so that you will be able to make changes to the buffer but you will not be able to accidentally orphan the pointer. This is a very good safety measure that I strongly suggest you keep as-is.
 
 ### Push data into the circular buffer
 
-In majority of the use case scenarios, you will be calling this from within an ISR. Hence, a push should be as small and the whole routine should be enclosed withing critical sections to make it synchronized in multi threaded environments.
+In majority of the use case scenarios, you will be calling this from within an ISR. Hence, a push should be as small and the whole routine should be enclosed within critical sections to make it synchronized in multi threaded environments.
 
 Data has to be loaded before the head pointer is incremented to ensure that only valid data is read by the consumer thread (one which calls pop. See below).
 
@@ -77,11 +101,11 @@ int circBufPush(circBuf_t *c, uint8_t data)
 
 ### Pop data from the circular buffer
 
-Pop routine is called by the application process to pull data off the buffer. This also has to be enclosed in critical sections if more than one threads are reading off this buffer (although thats not how it is usually done)
+Pop routine is called by the application process to pull data off the buffer. This also has to be enclosed in critical sections if more than one threads are reading off this buffer (although that's not how it is usually done)
 
-Here, the tail _can_ be moved to the next offset before the data has been read since each data unit is one byte and we reserve one byte in the buffer when we are fully loaded. But in more advanced circular buffer implementations, data units does not _need_ to be of the same size. In such cases, we don't know how much tail has to be moved before reading the data.
+Here, the tail _can_ be moved to the next offset before the data has been read since each data unit is one byte and we reserve one byte in the buffer when we are fully loaded. But in more advanced circular buffer implementations, data units does not _need_ to be of the same size. In such cases, we try to save even the last byte adding more check and bounds.
 
-To maintain consistency with such implementations, I will read data and then move the tail pointer.
+In such implementations, if tail is moved before read, the data to be read can potentially be overwritten by a newly pushed data. So its a general best practice to the read data and then move the tail pointer.
 
 ```c
 int circBufPop(circBuf_t *c, uint8_t *data)
@@ -101,7 +125,7 @@ int circBufPop(circBuf_t *c, uint8_t *data)
 }
 ```
 
-### Usage
+## Typical use case
 
 I think its pretty obvious that you have to define a buffer of a certain length and then create an instance of `circBuf_t` and assign the pointer to buffer and its `maxLen`.
 
