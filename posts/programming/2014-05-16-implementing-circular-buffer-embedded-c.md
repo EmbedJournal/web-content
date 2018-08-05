@@ -182,5 +182,6 @@ Edit History:
 ```
 
 [1]: https://en.wikipedia.org/wiki/Circular_buffer
-[3]: https://raw.githubusercontent.com/EmbedJournal/c-utils/master/circular-byte-buffer.c
-[4]: https://raw.githubusercontent.com/EmbedJournal/c-utils/master/circular-byte-buffer.h
+[2]: https://github.com/EmbedJournal/c-utils
+[3]: https://github.com/EmbedJournal/c-utils/blob/master/circular-byte-buffer.c
+[4]: https://github.com/EmbedJournal/c-utils/blob/master/circular-byte-buffer.h

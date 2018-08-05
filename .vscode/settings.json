@@ -1,7 +1,0 @@
-{
-    "[markdown]": {
-        "editor.wordWrap": "bounded",
-        "editor.wordWrapColumn": 80,
-        "editor.quickSuggestions": false
-    }
-}
