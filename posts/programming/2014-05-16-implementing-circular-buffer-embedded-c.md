@@ -20,7 +20,7 @@ Choice of a good data structure or algorithm for a given problem comes after a d
 
 For those of you who don't know what a circular buffer is, it is data structure where an array is treated/visualized to be circular; that is, the indices loop back to 0 after it reaches array length. This is done by having two pointers to the array, the "head" pointer and the "tail" pointer. As data is added (write) to the buffer, the head pointer moves up. Similarly, when the data is being removed (read) the tail pointer moves up. The definition of head, tail, their movement direction and write and read location are all implementation dependent. So, for the sake of this discussion, we will agree, that a _write_ is done at head and read at _tail_.
 
-Here is a nice GIF that [Wikipedia](https://en.wikipedia.org/wiki/Circular_buffer) had,
+Here is a nice GIF that [Wikipedia][1] had,
 
 {% include image.html src="circular-buffer-animation.gif" %}
 
@@ -64,8 +64,8 @@ typedef struct {
     uint8_t * const buffer;
     int head;
     int tail;
-    const int maxLen;
-} circBuf_t;
+    const int maxlen;
+} circ_bbuf_t;
 ```
 
 There goes our primary structure to handle the buffer and its pointers. Notice that buffer is `uint8_t * const buffer`. `const uint8_t *` is a pointer to a byte array of constant elements, that is the value being pointed to can't be changed but the pointer itself can be. On the other hand `uint8_t * const` is a constant pointer to an array of bytes in which the value being pointed to can changed but the pointer cannot be changed.
@@ -83,18 +83,19 @@ Also, if you notice, we hold one byte as reserved space in the buffer. On first 
 So, in conclusion, for small and fixed size data units, just reserve one byte while you can still keep your sanity.
 
 ```c
-int circBufPush(circBuf_t *c, uint8_t data)
+int circ_bbuf_push(circ_bbuf_t *c, uint8_t data)
 {
-    // next is where head will point to after this write.
-    int next = c->head + 1;
-    if (next >= c->maxLen)
+    int next;
+
+    next = c->head + 1;  // next is where head will point to after this write.
+    if (next >= c->maxlen)
         next = 0;
 
-    if (next == c->tail) // check if circular buffer is full
-        return -1;       // and return with an error.
+    if (next == c->tail)  // if the head + 1 == tail, circular buffer is full
+        return -1;
 
-    c->buffer[c->head] = data; // Load data and then move
-    c->head = next;            // head to next data offset.
+    c->buffer[c->head] = data;  // Load data and then move
+    c->head = next;             // head to next data offset.
     return 0;  // return success to indicate successful push.
 }
 ```
@@ -108,65 +109,78 @@ Here, the tail _can_ be moved to the next offset before the data has been read s
 In such implementations, if tail is moved before read, the data to be read can potentially be overwritten by a newly pushed data. So its a general best practice to the read data and then move the tail pointer.
 
 ```c
-int circBufPop(circBuf_t *c, uint8_t *data)
+int circ_bbuf_pop(circ_bbuf_t *c, uint8_t *data)
 {
-    // if the head isn't ahead of the tail, we don't have any characters
-    if (c->head == c->tail) // check if circular buffer is empty
-        return -1;          // and return with an error
+    int next;
 
-    // next is where tail will point to after this read.
-    int next = c->tail + 1;
-    if(next >= c->maxLen)
+    if (c->head == c->tail)  // if the head == tail, we don't have any data
+        return -1;
+
+    next = c->tail + 1;  // next is where tail will point to after this read.
+    if(next >= c->maxlen)
         next = 0;
 
-    *data = c->buffer[c->tail]; // Read data and then move
-    c->tail = next;             // tail to next data offset.
+    *data = c->buffer[c->tail];  // Read data and then move
+    c->tail = next;              // tail to next offset.
     return 0;  // return success to indicate successful push.
 }
 ```
 
 ## Typical use case
 
-I think its pretty obvious that you have to define a buffer of a certain length and then create an instance of `circBuf_t` and assign the pointer to buffer and its `maxLen`.
+I think its pretty obvious that you have to define a buffer of a certain length and then create an instance of `circ_bbuf_t` and assign the pointer to buffer and its `maxlen`.
 
 It also goes without saying that the buffer has to be global or it has to be in stack so long as you need to use it.
 
 To make maintenance a little easier, you could use this macro but compromises code readability for new users.
 
 ```c
-#define CIRCBUF_DEF(x,y)          \
-    uint8_t x##_dataSpace[y];     \
-    circBuf_t x = {               \
-        .buffer = x##_dataSpace,      \
-        .head = 0,                \
-        .tail = 0,                \
-        .maxLen = y               \
+#define CIRC_BBUF_DEF(x,y)                \
+    uint8_t x##_data_space[y];            \
+    circ_bbuf_t x = {                     \
+        .buffer = x##_data_space,         \
+        .head = 0,                        \
+        .tail = 0,                        \
+        .maxlen = y                       \
     }
 ```
 
 So for example if you need a circular buffer of length 32 bytes, you would do something like this in your application,
 
 ```c
-CIRCBUF_DEF(myDatBuf, 32);
+CIRC_BBUF_DEF(my_circ_buf, 32);
 
-void thisIsYourAppCode()
+int your_application()
 {
-    uint8_t outData, inData = 0x55;
+    uint8_t out_data=0, in_data = 0x55;
 
-    if (circBufPush(&myDatBuf, inData)) {
-        DBG("Out of space in CB");
-        return;
+    if (circ_bbuf_push(&my_circ_buf, in_data)) {
+        printf("Out of space in CB\n");
+        return -1;
     }
 
-    if (circBufPop(&myDatBuf, &outData)) {
-        DBG("CB is empty");
-        return;
+    if (circ_bbuf_pop(&my_circ_buf, &out_data)) {
+        printf("CB is empty\n");
+        return -1;
     }
 
-    // here outData = inData = 0x55;
-
-    return data;
+    // here in_data = in_data = 0x55;
+    printf("Push: 0x%x\n", in_data);
+    printf("Pop:  0x%x\n", out_data);
+    return 0;
 }
 ```
 
+You can find a complete implementation of the above at [EmbedJournal/c-utils.git][2] in files [circular-byte-buffer.c][3] and [circular-byte-buffer.h][4].
+
 I hope this post was of some help in understanding circular buffers. We will see more such data structures and an advanced extensions to this circular buffer types in future posts.
+
+```text
+Edit History:
+04 Aug 2018 - Reworded to clarify need for unused byte in buffer
+05 Aug 2018 - Refactor code; Added reference to EmbedJournal/c-utils.git
+```
+
+[1]: https://en.wikipedia.org/wiki/Circular_buffer
+[3]: https://raw.githubusercontent.com/EmbedJournal/c-utils/master/circular-byte-buffer.c
+[4]: https://raw.githubusercontent.com/EmbedJournal/c-utils/master/circular-byte-buffer.h
