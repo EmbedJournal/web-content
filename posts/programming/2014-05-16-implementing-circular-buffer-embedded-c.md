@@ -12,6 +12,8 @@ tags: [ "Theory", "Algorithm" ]
 
 Embedded software often involves state machines, circular buffers and queues. This article will give you an overview of the data structure and walks you through the steps involved in implementing circular/ring buffers in low memory devices.
 
+{% include toc.html %}
+
 ## Theoretical Background
 
 Choice of a good data structure or algorithm for a given problem comes after a deep understanding of the underlying theory. In this section we will go over some of the key aspects and problems of a circular buffer implementation. Hopefully, this will allow you to make informed decisions on the choice of data structure.
