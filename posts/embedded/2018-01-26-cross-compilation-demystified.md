@@ -18,17 +18,17 @@ Before we get into the specifics, we will take a detour and explain cross-compil
 
 ## What is cross-compilation?
 
-It is the process of building an executable from source with a suitable compiler ([cross-compiler][1]) in one machine that can be directly executed in another. That is, the build and host machines are not of the same architecture (more on these terms later).
+It is the process of building an executable from source with a suitable compiler ([cross-compiler][1]) in one machine that can be directly executed in another. That is, the build and host machines are not of the same architecture (more on these terms [later][11]).
 
 In other words, it is compilation of sources in one architecture that can be run on another with a suitable compiler.
 
 ### What is the need for cross-compilation?
 
-Predominantly, cross-compilation is used in the embedded world (it is used elsewhere as well) where the host platform is severely limited in resources. These limitations preclude the possibility of having a compiler on-board the host system hence the need for cross-compilation.
+Predominantly, cross-compilation is used in the embedded world (it is used elsewhere as well) where the host platform (where the application will run) is severely limited in resources. On the other hand, the build machine (usually) has a lot more juice (CPU, GPU, RAM, etc.,) to produce machine code that can be executed directly in another architecture.
 
-On the other hand, the build machine is expected to have a lot more juice (CPU & RAM) to produce machine code that can be executed directly in another architecture.
+These limitations in the host system preclude the possibility of having a compiler on-board and ergo, the need for cross-compilation.
 
-### Can you get anything cross-compiled?
+### Can you get anything cross-compiled easily?
 
 Short answer, no.
 
@@ -177,3 +177,4 @@ To wrap it all up, I think I've covered most of what came to my mind about cross
 [8]: https://github.com/cbsiddharth/limpid
 [9]: https://en.wikipedia.org/wiki/POSIX
 [10]: https://www.gnu.org/software/make/manual/html_node/Flavors.html#Flavors
+[11]: /cross-compilation-demystified/#what-is-the-need-for-cross-compilation
