@@ -5,6 +5,7 @@ date_modified: 2017-04-03T09:37:00+05:30
 author: Siddharth
 thumbnail: post-thumb.png
 permalink: /implementing-circular-buffer-embedded-c/
+popular_post: true
 dsq_thread_id: "3290596090"
 category: "Programming"
 tags: [ "Theory", "Algorithm" ]

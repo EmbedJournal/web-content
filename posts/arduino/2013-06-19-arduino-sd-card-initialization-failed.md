@@ -5,8 +5,8 @@ date_modified: 2017-04-01T10:00:00+05:30
 author: Siddharth
 thumbnail: post-thumb.jpg
 permalink: /arduino-sd-card-initialization-failed/
-dsq_thread_id: "2728571509"
 popular_post: true
+dsq_thread_id: "2728571509"
 category: "Arduino"
 tags: [ "HowTo", "FAQ" ]
 ---

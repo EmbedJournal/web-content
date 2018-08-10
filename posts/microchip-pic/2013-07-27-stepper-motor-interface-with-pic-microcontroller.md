@@ -5,6 +5,7 @@ date_modified: 2017-04-01T10:00:00+05:30
 author: Siddharth
 thumbnail: post-thumb.jpg
 permalink: /stepper-motor-interface-with-pic-microcontroller/
+popular_post: true
 dsq_thread_id: "2701808208"
 category: "Microchip PIC"
 tags: [ "Basics", "Theory", "PWM" ]

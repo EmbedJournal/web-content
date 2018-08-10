@@ -6,7 +6,6 @@ author: Siddharth
 thumbnail: post-thumb.jpg
 permalink: /make-a-cheap-wireless-robot/
 dsq_thread_id: "2728559176"
-popular_post: true
 category: "Robotics"
 tags: [ "HowTo", "DIY", "Wireless", "Robot" ]
 ---
@@ -93,7 +92,7 @@ void main()
 }
 ```
 
-Thats all folks! Here is a video to demonstrate the output of the above procedure. 
+Thats all folks! Here is a video to demonstrate the output of the above procedure.
 
 {% include youtube.html src="OF9ecZVAZCE" %}
 

@@ -5,6 +5,7 @@ date_modified: 2017-04-01T10:00:00+05:30
 author: Siddharth
 thumbnail: post-thumb.jpg
 permalink: /interface-4x4-matrix-keypad-with-microcontroller/
+popular_post: true
 dsq_thread_id: "2701818794"
 category: "Embedded"
 tags: [ "Algorithm", "Interface", "Theory" ]
