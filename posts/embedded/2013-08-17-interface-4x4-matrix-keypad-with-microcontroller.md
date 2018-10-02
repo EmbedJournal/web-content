@@ -13,7 +13,7 @@ tags: [ "Algorithm", "Interface", "Theory" ]
 
 In this post we will discuss logic and interface of a matrix keypad (4x4 for this post) with microcontroller to reduce the number of port pins required to read a certain number of inputs (digital). The same logic applies to any matrix keypad of order NxN. Where, N is the order of the matrix.
 
-### Why Matrix Keypad?
+## Why Matrix Keypad?
 
 Typically one port pin is required to read a digital input into the controller. When there are a lot of digital inputs that have to be read, it is not feasible to allocate one pin for each of them. This is when a matrix keypad arrangement is used to reduce the pin count.
 
@@ -23,7 +23,7 @@ Therefore, the number of pins that are required to interface a given number of i
 
 **Example:** If the matrix is 2x2, you will need 2 pins for the rows and 2 pins for the columns. In such a case there is no difference in the cost of reading that many inputs. But if you consider a 10x10 matrix you will just need 20 pins (10 for the rows and 10 for the columns) to read 100 digital inputs.
 
-### How is it wired up internally?
+## How is it wired up internally?
 
 Here is how the matrix keypad is wired internally.
 
@@ -31,29 +31,33 @@ Here is how the matrix keypad is wired internally.
 
 From the circuit you can see that when one of the 16 buttons are pressed, a pair of pins are connected together. We will use this feature to detect the button that was pressed in the following sections.
 
-### Matrix Keypad Interface Logic
+## Matrix Keypad Interface Logic
 
 Initially all switches are assumed to be released. So there is no connection between the rows and columns. When any one of the switches are pressed, the corresponding row and column are connected (short circuited). This will drive that column pin (initially high) low. Using this logic, the button press can be detected. The colors red and black is for logic high and low respectively. Here are the steps involved in determining the key that was pressed.
 
-**Step 1:** The first step involved in interfacing the matrix keypad is to write all logic 0's to the rows and all logic 1's to the columns. In the image, black line symbolizes logic 0 and red line symbolizes logic 1.
+### Step 1:
+
+The first step involved in interfacing the matrix keypad is to write all logic 0's to the rows and all logic 1's to the columns. In the image, black line symbolizes logic 0 and red line symbolizes logic 1.
 
 For now let us assume that, the circled key is pressed and see how the key press can be detected by a software routine.
 
 {% include image.html src="matrix-keypad-wiring-diagram.png" %}
 
-**Step 2:** Now the software has to scan the pins connected to columns of the keypad. If it detects a logic 0 in any one of the columns, then a key press was made in that column. This is because the event of the switch press shorts the C2 line with R2. Hence C2 is driven low.
+### Step 2:
+
+Now the software has to scan the pins connected to columns of the keypad. If it detects a logic 0 in any one of the columns, then a key press was made in that column. This is because the event of the switch press shorts the C2 line with R2. Hence C2 is driven low.
 
 Note: color of the lines indicate the logic values they return.
 
 {% include image.html src="matrix-keypad-column-scan.png" %}
 
-#### Step 3:
+### Step 3:
 
 Once the column corresponding to the key pressed is located, the next thing that the software has to do is to start writing logic 1's to the rows sequentially (one after the other) and check if C2 becomes high. The logic is that if a button in that row was pressed, then the value written to that row will be reflected in the corresponding column (C2) as they are short circuited. Note: color of the lines indicate the logic values they return.
 
 {% include image.html src="matrix-keypad-row-scan.png" %}
 
-#### Step 4:
+### Step 4:
 
 The procedure is followed till C2 goes high when logic high is written to a row. In this case, a logic high to the second row will be reflected in the second column.
 
@@ -65,7 +69,7 @@ We already know that the key press happened at column 2. Now we have detected th
 
 Once this is detected, its up to us to name it or provide it with a task on the event of the key press.
 
-### Implementation with C
+## Implementation in C
 
 Now lets see how the above logic can be implemented in embedded C. Here is the program I wrote to test it. This code is for PIC microcontrollers with c18 lite version compiler. I as usual, used a lot of macros so if you are an Arduino user you could easily make some alterations to the code and use it. The basic concept for keypad scan is inside the while(1) loop.
 
