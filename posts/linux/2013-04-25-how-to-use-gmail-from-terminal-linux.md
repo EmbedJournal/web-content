@@ -1,10 +1,10 @@
 ---
-title: "How to use gmail form terminal (Linux)"
+title: "How to use gmail from terminal (Linux)"
 date: 2013-04-25T18:33:39+00:00
 date_modified: 2017-04-01T10:00:00+05:30
 author: Siddharth
 thumbnail: post-thumb.png
-permalink: /how-to-use-gmail-form-terminal-linux/
+permalink: /how-to-use-gmail-from-terminal-linux/
 dsq_thread_id: "2728571155"
 category: "Linux"
 tags: [ HowTo, "CLI", "Intro" ]
@@ -14,7 +14,7 @@ tags: [ HowTo, "CLI", "Intro" ]
 
 Great news!! Gmail, our favorite mail service can be accessed from the command line!!
 
-Now you can access your favorite mail service - gmail - form a terminal in a Linux system with a command line interface. People may wonder why anyone would want to use gmail from the command line, when Google has created such a nice user friendly interface for its users. There are a lot of reasons why one would want to use a CLI (command-line interface) for sending mails. One of the main reasons being the power of shell scripting in a Linux machine. You can automate the entire process by writing small shell scripts and make life much easier. The other reason why I use the command line way is because it uses very less bandwidth (Gmail tab on chrome takes up 400MB of RAM these days).
+Now you can access your favorite mail service - Gmail - from a terminal in a Linux system with a command line interface. People may wonder why anyone would want to use Gmail from the command line, when Google has created such a nice user friendly interface for its users. There are a lot of reasons why one would want to use a CLI (command-line interface) for sending mails. One of the main reasons being the power of shell scripting in a Linux machine. You can automate the entire process by writing small shell scripts and make life much easier. The other reason why I use the command line way is because it uses very less bandwidth (Gmail tab on chrome takes up 400MB of RAM these days).
 
 Lets get started. I use Ubuntu (current version) . If you have some other flavor of Linux you might have to port the commands to work on your system.
 
@@ -66,7 +66,7 @@ $ chmod 600 .msmtprc
 
 For more details see manual page of chmod.
 
-**Step4 :** Now we have configured the gmail settings and your computer should not have any trouble talking to the remote server. We have to set up a command-line email program to talk to the mail-server. So install mailx.
+**Step4 :** Now we have configured the Gmail settings and your computer should not have any trouble talking to the remote server. We have to set up a command-line email program to talk to the mail-server. So install mailx.
 
 
 ```shell
@@ -86,7 +86,7 @@ set sendmail="/usr/bin/msmtp"
 set message-sendmail-extra-arguments="-a gmail"
 ```
 
-This should be enough to set up gmail to work form the command line. If you are having any problems with the above procedure leave a comment and I will get back to you shortly.
+This should be enough to set up Gmail to work from the command line. If you are having any problems with the above procedure leave a comment and I will get back to you shortly.
 
 **How to use it?**
 
