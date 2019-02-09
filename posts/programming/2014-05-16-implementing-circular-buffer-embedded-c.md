@@ -1,7 +1,7 @@
 ---
-title: "Implementing Circular/Ring Buffer in Embedded C"
+title: "Implementing Circular Buffer in C"
 date: 2014-05-16T18:55:54+00:00
-date_modified: 2017-04-03T09:37:00+05:30
+date_modified: 2019-02-01T10:27:12+05:30
 author: Siddharth
 thumbnail: post-thumb.png
 permalink: /implementing-circular-buffer-embedded-c/
@@ -11,7 +11,7 @@ category: "Programming"
 tags: [ "Theory", "Algorithm" ]
 ---
 
-Embedded software often involves state machines, circular buffers and queues. This article will give you an overview of the data structure and walks you through the steps involved in implementing circular/ring buffers in low memory devices.
+Embedded software often involves state machines, circular buffers and queues. This article will give you an overview of the data structure and walks you through the steps involved in implementing circular buffers in low memory devices. If you are already familiar with the basics of such data structures, feel free to jump into the implementation section from the below table of contents.
 
 {% include toc.html %}
 
@@ -21,40 +21,48 @@ Choice of a good data structure or algorithm for a given problem comes after a d
 
 ### What is a circular buffer?
 
-For those of you who don't know what a circular buffer is, it is data structure where an array is treated/visualized to be circular; that is, the indices loop back to 0 after it reaches array length. This is done by having two pointers to the array, the "head" pointer and the "tail" pointer. As data is added (write) to the buffer, the head pointer moves up. Similarly, when the data is being removed (read) the tail pointer moves up. The definition of head, tail, their movement direction and write and read location are all implementation dependent. So, for the sake of this discussion, we will agree, that a _write_ is done at head and read at _tail_.
+Circular buffer is a FIFO data structure that treats memory to be circular; that is, the read/write indices loop back to 0 after it reaches the buffer length. This is achieved by two pointers to the array, the "head" pointer and the "tail" pointer. As data is added (write) to the buffer, the head pointer is incremented and likewise, when the data is being removed (read) the tail pointer is incremented. The definition of head, tail, their movement direction and write and read location are all implementation dependent but the idea/goal remains the same.
 
-Here is a nice GIF that [Wikipedia][1] had,
+So, for the sake of this discussion, we will consider, that a _write_ is done at head and read at _tail_. Here is a nice GIF from [Wikipedia][1]:,
 
 {% include image.html src="circular-buffer-animation.gif" %}
 
-The picture says it all. The animation is very fast and may take some iterations before you notice all the cases involved but do spend the time it gives a visual representation of the memory and pointers that will be used in later parts of this post.
+The picture says it all. The animation is very fast and may take some iterations before you notice all the cases involved. Do spend the time with this image as it gives a visual representation of the memory and pointers that will be used in later parts of this post.
+
+### Need for circular buffers
+
+Circular buffers are excessively used to solve the single produce-consumer problem. That is, one thread of execution is responsible for data production and another for consumption. In the very low to medium embedded devices, the producer is often an Interrupt Service Routine (ISR) - perhaps data produced from sensors - and consumer is the main event loop.
+
+But why does it have to be circular? why not a regular array? one might wonder. It is a very common question that pops out when you hear about circular buffers for the first time. Though the course of this article, the need for these data structures will be made very clear.
 
 ### Synchronization and race conditions
 
-I'm sure you have come across a race condition due to lack of synchronization in your programming career. Most people seem to think they don't apply to the low memory embedded world (which is in verge of extinction) where there is only one thread of execution. On the contrary, they do exist (think of ISRs here), if not more predominantly.
+I'm sure you have come across a race condition due to lack of synchronization in your programming career. Most people seem to think they don't apply to the low memory embedded world (which is in verge of extinction) where there is only one thread of execution. On the contrary, they exist there too (think of ISRs here), in fact, more predominantly there.
 
-Circular buffers are excessively used to solve the produce-consumer problem. That is, one thread of executing is responsible for data production and another for consumption. In the very low to medium embedded devices, the producer is often an ISR (data produced from sensors) and consumer is the main event loop.
+The nice thing about circular buffers is its elegance. The down side is its not easy to implement it without race conditions. Another good thing is that they can be implemented without the need for locks for a single producer and single consumer environment. It may not sound like much but, don't be too quick to judge, single producer-consumer needs account for a large portion overall circular buffer applications.
 
-The nice thing about circular buffers is that it can be implemented without the need for locks in a single producer and single consumer environment. This makes it an ideal data structure for bare-metal embedded programs. The bottom line is that it _has_ to be implemented correctly to be free of a race.
+This makes it an ideal data structure for bare-metal embedded programs. The bottom line is that it _has_ to be implemented correctly to be free of a race.
 
 ### The full vs empty problem
 
-The next big thing about circular buffers is that there is no "clean way" to differentiate the buffer full vs empty cases. This is because at both cases, head is equal to tail. There are a lot of ways/workarounds to deal with this but most of them introduce a lot of complexity and hinders readability. Here, I'm presenting a method that is fairly straightforward (IMHO) and readable.
+The big pain point in circular buffers is that there is no _clean way_ to differentiate the buffer full vs empty cases. This is because in both the cases, head is equal to tail. That is, initially head and tail pointed point to the same location; when data is filled into the buffer, head is incremented and eventually it wraps around (more on this later) and catches tail when you fill the N<sup>th</sup> element into the N element buffer. At this point, head will point to the same location as tail but now the buffer is actually full, not empty.
 
-In this method, we deliberately use only `n-1` elements in the buffer. The last element is used (more like a flag) to differentiate between empty and full cases. By this logic,
+There are a lot of ways/workarounds to deal with this but most of them introduce a lot of complexity and hinders readability. This article presents a method that gives importance to elegance in design.
 
-  * if head is equal to tail: the buffer is empty
+In this method, we deliberately use only N-1 elements in the N element buffer. The last element is used (this of this more like a flag) to differentiate between empty and full cases. By this logic,
+
+  * if head is equal to tail -> the buffer is empty
   * if (head + 1) is equal to tail -> the buffer is full
 
-In essence, at every push, you check for `is_buffer_full` condition and every pop, you check for `is_buffer_empty`.
+In essence, every push checks the `is_buffer_full` condition and every pop, checks the `is_buffer_empty`.
 
 ### Overwrite or discard when full?
 
-This is the last question that pops up regarding circular buffers. Whether new data has to be discarded or should it overwrite existing data when the buffer is full. The answer is, there is no clear advantage of one over the other, and most of the time its implementation specific. If the most recent data makes more sense to your application, then go with the overwrite approach. On the other hand, if data has to processed on a first-come first-serve mode, then discard.
+This is the last question that pops up regarding circular buffers. Whether new data has to be discarded or should it overwrite existing data when the buffer is full. The answer is, there is no clear advantage of one over the other, and most of the time its implementation/usage specific. If the most recent data makes more sense to your application, then go with the overwrite approach. On the other hand, if data has to processed on a first-come first-serve mode discard.
 
 The following implementation will discard new data when the buffer is full.
 
-## Circular buffer implementation
+## Implementation in C
 
 Now that we have dealt with the theory, let's proceed with the implementation by defining the data types and subsequently the core, push and pop methods.
 
@@ -71,7 +79,7 @@ typedef struct {
 } circ_bbuf_t;
 ```
 
-There goes our primary structure to handle the buffer and its pointers. Notice that buffer is `uint8_t * const buffer`. `const uint8_t *` is a pointer to a byte array of constant elements, that is the value being pointed to can't be changed but the pointer itself can be. On the other hand `uint8_t * const` is a constant pointer to an array of bytes in which the value being pointed to can changed but the pointer cannot be changed.
+There goes our primary structure to handle the buffer and its pointers. Notice that buffer is `uint8_t * const buffer`. `const uint8_t *` is a pointer to a byte array of constant elements, that is the value being pointed to can't be changed but the pointer itself can. On the other hand `uint8_t * const` is a constant pointer to an array of bytes in which the value being pointed to can changed but not the pointer.
 
 This is done so that you will be able to make changes to the buffer but you will not be able to accidentally orphan the pointer. This is a very good safety measure that I strongly suggest you keep as-is.
 
@@ -131,9 +139,7 @@ int circ_bbuf_pop(circ_bbuf_t *c, uint8_t *data)
 
 ## Typical use case
 
-I think its pretty obvious that you have to define a buffer of a certain length and then create an instance of `circ_bbuf_t` and assign the pointer to buffer and its `maxlen`.
-
-It also goes without saying that the buffer has to be global or it has to be in stack so long as you need to use it.
+I think its pretty obvious that you have to define a buffer of a certain length and then create an instance of `circ_bbuf_t` and assign the pointer to buffer and its `maxlen`. It also goes without saying that the buffer has to be global or it has to be in stack so long as you need to use it.
 
 To make maintenance a little easier, you could use this macro but compromises code readability for new users.
 
@@ -174,14 +180,15 @@ int your_application()
 }
 ```
 
-You can find a complete implementation of the above at [EmbedJournal/c-utils.git][2] in files [circular-byte-buffer.c][3] and [circular-byte-buffer.h][4].
+You can find a complete implementation of the above at [EmbedJournal/c-utils][2] in files [circular-byte-buffer.c][3] and [circular-byte-buffer.h][4].
 
-I hope this post was of some help in understanding circular buffers. We will see more such data structures and an advanced extensions to this circular buffer types in future posts.
+I hope this post was of some help in understanding circular buffers. We will see more such data structures and an advanced extensions to this circular buffer that allows push/pop of non just bytes but any data type (even user defined data types) with type checking and other niceness in a future post.
 
 ```text
 Edit History:
 04 Aug 2018 - Reworded to clarify need for unused byte in buffer
 05 Aug 2018 - Refactor code; Added reference to EmbedJournal/c-utils.git
+01 Feb 2019 - Modify post heading; some rewording/restructuring
 ```
 
 [1]: https://en.wikipedia.org/wiki/Circular_buffer
