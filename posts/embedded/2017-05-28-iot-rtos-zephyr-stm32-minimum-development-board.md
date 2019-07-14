@@ -11,7 +11,7 @@ tags: [ "Zephyr", "RTOS", "STM32", "stm32_min_dev", "XCompile" ]
 
 If you have been listening closely, you would have heard the buzz around [Zephyr][zephyr-project-home] - a Real Time Operating system (RTOS) for embedded systems. The real buzz comes from the fact that this RTOS is being tweaked for IoT platforms in particular.
 
-A lot of action is happening around Zephyr in the past few months and it is going to play a major role in the embedded/IoT space in the forthcoming days. Support for Tensilica's Xtensa core is also in the progress, this will be a game changer if we can run Zephyr on our favorite ESP8266 in the near future.
+A lot of action is happening around Zephyr in the past few months and it is going to play a major role in the embedded/IoT space in the forthcoming days. Support for Tensilica's Xtensa core is also in the progress, this will be a game changer if we can run Zephyr on our favourite ESP32 in the near future.
 
 Let's take a look at zephyr and how we can use it to create amazing applications.
 
@@ -20,7 +20,7 @@ Why Zephyr?
 
 The Linux Foundation, backed by companies like Linaro, Intel, ST, and NXP are spearheading Zephyr development. Zephyr is released under Open Source Apache license, needless to say, MIT and Apache are some of the most desirable licenses for Free and Open Source Software (FOSS) as they don't pose much regulation. This means you can use it on, pretty much any commercial product without having to worry about licensing related implications.
 
-Zephyr is being developed by the Linux developer community. So the source code organization is very well done and resembles the Linux kernel source tree in a lot of sense. The make system has been adopted from the Linux kernel, it kind off makes you feel at home.
+Zephyr is being developed by the Linux developer community. So the source code organisation is very well done and resembles the Linux kernel source tree in a lot of sense. The make system has been adopted from the Linux kernel, it kind off makes you feel at home.
 
 I have used [FreeRTOS][freertos] in the past, and during my initial days, have had great difficulty in locating where a given module fell ie., it wasn't very intuitive to begin with. Also, it had the macro soup (#ifdefs literally everywhere) issue that Zephyr doesn't (currently) suffer.
 
@@ -89,45 +89,51 @@ After a bunch of email exchanges with Erwan Gouriou (Zephyr developer), [here][z
 Build and Flash
 ---------------
 
-Now before you start building with zephyr, you will need to setup the zephyr tool chain. This is fairly straight forward procedure and Zephyr's [Development Environment Setup][zephyr-dev] page is pretty accurate.
+Now before you start building with zephyr, you will need to setup the zephyr toolchain and kernel sources. This is fairly straight forward procedure and Zephyr's [Development Environment Setup][zephyr-dev] page does an excellent job at it. If you run into any issues, leave a comment and I will try to sort it out.
 
-Now that we have the right setup in place, lets go ahead and build the embedded equivalent of a "hello world".
+I am going to assume you choose the defaults when setting up your zephyr SDK and that you would be using west. If you made modification to the paths during setup, be sure to alter the below guide accordingly. That said, lets go ahead and build the embedded equivalent of a hello-world project &mdash; blink-an-led.
 
-To being with, you will need a local copy of the Zephyr source tree. So lets go ahead and clone the upstream repository from [GitHub][zephry-github].
+For our app to build correctly, you need to source `zephyr-env.sh` from the root level of the zephyr repository.
 
-```shell
-$ cd ~/workspace
-$ git clone https://github.com/zephyrproject-rtos/zephyr.git
+``` bash
+cd ~/zephyrproject/zephyr && source zephyr-env.sh
 ```
 
-Once you have clone the zephyr source tree, you will have export zephyr SDK path and GCC variant so that the zephyr make system understand where to find the toolchains. You will also need to source `zephyr-env.sh` present in the top level of the cloned repository.
+If you plan on workring with zephyr frequently, I found that adding an alias to source the zephyr environment file comes in pretty handy.
 
-```shell
-$ export ZEPHYR_GCC_VARIANT=zephyr
-$ export ZEPHYR_SDK_INSTALL_DIR=/path/to/zephyr-sdk/
-$ cd zephyr
-$ source zephyr-env.sh
+``` bash
+echo "alias get_zephyr='source ~/zephyrproject/zephyr/zephyr-env.sh'" >> ~/.bashrc
 ```
 
-Zephyr allows your application software to be isolated from the Zephyr kernel (although, they are built together) so, it's a good practice to copy samples into your workspace and then build them. This way, your git tree remains pristine.
+Zephyr allows your application to be built outside of the kernel and it's dependencies &mdash; shaddow building. It is a good practice to keep your source code out of the upstream repos (to maintain a clean git tree). So let's copy the blinky samples into your workspace and then build them.
 
-```shell
-$ cp -r $ZEPHYR_BASE/samples/basic/blinky ~/workspace/stm32/
-$ cd ~/workspace/stm32/blinky
-$ make BOARD=stm32_min_dev
+``` shell
+get_zephyr # (optional) this is to source zephyr-env.sh
+cp -r $ZEPHYR_BASE/samples/basic/blinky ~/workspace/
+mkdir ~/workspace/blinky/build && cd ~/workspace/blinky/build
+cmake -DBOARD=stm32_min_dev_black ..
+make
 ```
 
 If you did everything right, this `make` should build without any warnings or errors. This build triggers a recursive _make_ process that walks up the Zephyr source tree and builds all required modules. Since this is a Zephyr primer, we won't get into the details on how to configure the kernel. This will be tasked in a separate post.
 
 Now, the final step, sending the built binary into the board to see the output. To do this, all you have to do is, invoke the `flash` target and the rest of the work is done for you.
 
-```shell
-$ make BOARD=stm32_min_dev flash
+``` shell
+make flash
 ```
 
 You will notice that Zephyr invokes [open On Chip Debugger (openOCD)][openocd-home] to flash the board. You could also invoke the `debug` target to setup a GDB session with the board. Again, this is a huge topic and hence merits a separate post.
 
 Once this succeeds, you should see the only LED on the board, blink away to eternity. In my next post we will explore some other interesting features of Zephyr that could come in handy.
+
+```
+Edit History:
+28 May 2017 - Initial draft
+14 Jul 2019 - Update "Build and Flash" section to that in latest upstream.
+```
+
+
 
 [freertos]: http://www.freertos.org/
 [arduino-101]: https://www.arduino.cc/en/Main/ArduinoBoard101
@@ -137,7 +143,7 @@ Once this succeeds, you should see the only LED on the board, blink away to eter
 [zephry-list-1]: https://lists.zephyrproject.org/pipermail/zephyr-devel/2017-May/007664.html
 [zephry-list-2]: https://lists.zephyrproject.org/pipermail/zephyr-devel/2017-May/007678.html
 [zephyr-pull]: https://github.com/zephyrproject-rtos/zephyr/pull/272
-[zephyr-dev]:https://www.zephyrproject.org/doc/1.3.0/getting_started/installation_linux.html
+[zephyr-dev]:https://www.zephyrproject.org/doc/latest/getting_started/installation_linux.html
 [openocd-home]: http://openocd.org/
 [stm32-ebay]: http://www.ebay.in/itm/STM32F103C8T6-ARM-STM32-Minimum-System-Development-Board-Module-For-arduino-/142309080435
 [stlink-v2-ebay]: http://www.ebay.in/itm/ST-Link-V2-upgrade-for-STM8-STM32-Downloader-Programer-Emulator-STLink-V2-/141670713904
