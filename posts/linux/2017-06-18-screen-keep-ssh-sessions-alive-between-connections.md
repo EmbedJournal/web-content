@@ -19,7 +19,7 @@ I spend a lot of my time on remote machines. Be it my development server, or the
 
 ### What are we trying to solve?
 
-To give you an idea of what I am taking about, lets say you have a development server, where you initiate a build. A clean build on my current project (when I last timed) takes little over 40 minutes and incremental builds take up to 2 minutes (for this, I believe the poor make rules are fault).
+To give you an idea of what I am taking about, let's say you have a development server, where you initiate a build. A clean build on my current project (when I last timed) takes little over 40 minutes and incremental builds take up to 2 minutes (for this, I believe the poor make rules are fault).
 
 Now, lets say you start a SSH connection and initiate a clean build. For the sake of this discussion we will assume that you don't know how to keep an SSH connection alive indefinitely and your connection is interrupted. Or you were moving your laptop around and your wireless card roamed away to another SSID and you lost connection.
 
@@ -42,11 +42,11 @@ Your work flow will be like this, login to remote machine and then start off a s
 
 ### Screen Basics
 
-The good thing about screen is, you just need to know a handful of things initially to get going. Once you've gotten a hang of these basic stuffs, you can always pick up more things as and when you need them. So lets dive in.
+The good thing about screen is, you just need to know a handful of things initially to get going. Once you've gotten a hang of these basic stuffs, you can always pick up more things as and when you need them. So let's dive in.
 
-Screen is not installed by default in most distributions, but the good thing it that, it will (most probably) be available from standard repositories. So you can use `apt` or `yum` or `brew` to install it.
+Screen is not installed by default in most distributions, so you must use `apt` or `yum` or `brew` to install it.
 
-Not surprisingly, you start a screen session by using the `screen` command on a shell prompt.
+Not surprisingly, you start a screen session by using the `screen` command on a shell.
 
 ```shell
 $ screen
@@ -80,7 +80,7 @@ If there are more than one screen sessions, you will not be able to do `screen -
 
 ### Screen window management
 
-The best thing about screen is, it's ability to spawn of more than one TTY. In the same session, you can start of may windows. Screen starts one window when you create a session. After this you can use `C-a c` to create another. And move between those windows by using `C-a C-a`.
+The best thing about screen is, it's ability to spawn of more than one TTY. In the same session, you can start off may windows. Screen starts one window when you create a session. After this you can use `C-a c` to create another. And move between those windows by using `C-a C-a`.
 
 Now you can be in one directory in one and another in the other window. To see the list of windows, you hit `C-a "` and move up and down in the list to choose one. Once you are done, you can kill that window with `C-a k`, you will be asked for a confirmation to kill the current window. Here is a small subset of key bindings that you need to know to get started with screen.
 
@@ -99,13 +99,13 @@ Now you can be in one directory in one and another in the other window. To see t
 |----------------+---------------------------------------------------------|
 {: .table .table-bordered }
 
-This is not a full list of key bindings. There is an overwhelming number of [key bindings in the screen manual][screen-manual] do have a look at it once you have internalized the basics.
+This is not a full list of key bindings. There is an overwhelming number of [key bindings in the screen manual][screen-manual] do have a look at it once you have internalised the basics.
 
 ### Customizing screen with screenrc
 
 Like vim and bash, the runtime behavior of screen can be customized with a screenrc file in the home directory. The following code block is the contents of my screenrc file, I have been using for years and it works like a charm.
 
-If you are a screen beginner, then this is a good starting point. Copy the following lines to `~/.screerc` and checkout it's effects.
+If you are a screen beginner, then this is a good starting point. Copy the following lines to `~/.screenrc` and checkout its effects.
 
 ```text
 startup_message off
@@ -130,6 +130,22 @@ sorendition kw
 hardstatus alwayslastline
 hardstatus string "%{= ky}%-Lw%{=r}%20>%n %t%{= ky}%+Lw %{= ky}%-=| %{= kw}%M%d %c%{-} %{=r} ${USER}@%H "
 ```
+
+### What to start screen soon after login?
+
+As you familiarize yourself with screen, you will notice that most of the time `screen` is the first command that you run after ssh-ing into the machine. The easiest way to achieve this is to add an `exec screen -d -RR` as the last line in  `~/.bashrc`.  That works, but if there is some issue with screen and for some reason it won't start, then adding this line prevents you from logging into your machine, causing a lot of trouble.
+
+Alternatively, you could add the machine details to your `~/.ssh/config` and add a `RemoteCommand` section to indicate that you would like to attach-to/create a screen session after login.
+
+```text
+host my_machine
+	HostName 10.10.10.1
+	User sid
+	RequestTTY yes
+	RemoteCommand screen -d -RR
+```
+
+Now you could just do `ssh my_machine` to login to `sid@10.10.10.1`. Neat right?
 
 ### A word on tmux
 
