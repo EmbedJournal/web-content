@@ -189,9 +189,10 @@ Edit History:
 04 Aug 2018 - Reworded to clarify need for unused byte in buffer
 05 Aug 2018 - Refactor code; Added reference to EmbedJournal/c-utils.git
 01 Feb 2019 - Modify post heading; some rewording/restructuring
+31 Oct 2019 - Fix broken github link
 ```
 
 [1]: https://en.wikipedia.org/wiki/Circular_buffer
 [2]: https://github.com/EmbedJournal/c-utils
-[3]: https://github.com/EmbedJournal/c-utils/blob/master/circular-byte-buffer.c
-[4]: https://github.com/EmbedJournal/c-utils/blob/master/circular-byte-buffer.h
+[3]: https://github.com/EmbedJournal/c-utils/blob/master/archive/circular-byte-buffer.c
+[4]: https://github.com/EmbedJournal/c-utils/blob/master/archive/circular-byte-buffer.h
