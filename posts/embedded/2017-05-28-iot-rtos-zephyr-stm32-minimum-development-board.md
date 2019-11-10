@@ -125,12 +125,24 @@ make flash
 
 You will notice that Zephyr invokes [open On Chip Debugger (openOCD)][openocd-home] to flash the board. You could also invoke the `debug` target to setup a GDB session with the board. Again, this is a huge topic and hence merits a separate post.
 
-Once this succeeds, you should see the only LED on the board, blink away to eternity. In my next post we will explore some other interesting features of Zephyr that could come in handy.
+Once this succeeds, you should see the only LED on the board, blink away to eternity.
+
+If you run into some issues with `make flash`, it porbably due to permission issues. Add the following udev rules to fix them.
+
+```sh
+wget https://raw.githubusercontent.com/zephyrproject-rtos/openocd/master/contrib/60-openocd.rules
+mv 60-openocd.rules /etc/udev/rules.d/
+udevadm control --reload-rules
+udevadm trigger
+```
+
+Once the rules are loaded, you must add yourself to the group `plugdev`. If the group doesn't already exist, just crate it. After this, you should be able to successfully flash the device. In my next post we will explore some other interesting features of Zephyr that could come in handy.
 
 ```
 Edit History:
 28 May 2017 - Initial draft
 14 Jul 2019 - Update "Build and Flash" section to that in latest upstream.
+28 Sep 2019 - Add note on udev rules for make flash.
 ```
 
 
